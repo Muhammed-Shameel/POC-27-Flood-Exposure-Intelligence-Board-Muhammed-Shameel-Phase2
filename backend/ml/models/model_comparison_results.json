@@ -1,0 +1,46 @@
+{
+    "RandomForest": {
+        "MAE": 0.021033247499999977,
+        "RMSE": 0.026627497569476907,
+        "R2": 0.7153185235273438,
+        "CV Mean R2": 0.7179030368245666,
+        "CV Std": 0.0023819505430978777,
+        "Best Params": {
+            "model__n_estimators": 200,
+            "model__min_samples_split": 2,
+            "model__min_samples_leaf": 1,
+            "model__max_features": "sqrt",
+            "model__max_depth": null
+        },
+        "Training Time (s)": 122.62
+    },
+    "ExtraTrees": {
+        "MAE": 0.021381190000000008,
+        "RMSE": 0.027074573136062558,
+        "R2": 0.7056786692289119,
+        "CV Mean R2": 0.7073664825455269,
+        "CV Std": 0.001893222548270294,
+        "Best Params": {
+            "model__n_estimators": 100,
+            "model__min_samples_split": 2,
+            "model__min_samples_leaf": 1,
+            "model__max_features": "log2",
+            "model__max_depth": null
+        },
+        "Training Time (s)": 76.7
+    },
+    "GradientBoosting": {
+        "MAE": 0.0077026068624354805,
+        "RMSE": 0.009853579723947754,
+        "R2": 0.9610159844446856,
+        "CV Mean R2": 0.9618665285530932,
+        "CV Std": 0.00011430116475752489,
+        "Best Params": {
+            "model__subsample": 0.8,
+            "model__n_estimators": 200,
+            "model__max_depth": 5,
+            "model__learning_rate": 0.1
+        },
+        "Training Time (s)": 161.61
+    }
+}

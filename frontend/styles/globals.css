@@ -1,0 +1,74 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer base {
+  :root {
+    --font-geist-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+      'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+    --font-geist-mono: ui-monospace, SFMono-Regular, 'SF Mono', Consolas,
+      'Liberation Mono', Menlo, monospace;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-dark-bg text-white;
+  }
+}
+
+@layer components {
+  .glow-text {
+    @apply text-accent-cyan drop-shadow-lg;
+  }
+
+  .glow-box {
+    @apply border border-border rounded-lg bg-card-bg shadow-lg shadow-accent-cyan/10;
+  }
+
+  .button-primary {
+    @apply px-4 py-2 bg-accent-cyan text-dark-bg font-semibold rounded-lg hover:bg-accent-cyan/90 transition-colors;
+  }
+
+  .button-secondary {
+    @apply px-4 py-2 border border-accent-indigo text-accent-indigo rounded-lg hover:bg-accent-indigo/10 transition-colors;
+  }
+
+  .metric-card {
+    @apply glow-box p-4;
+  }
+}
+
+/* Leaflet map overrides */
+.leaflet-container {
+  @apply rounded-lg;
+}
+
+.leaflet-control {
+  @apply border-border !important;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  @apply bg-card-bg text-accent-cyan border-border !important;
+  @apply hover:bg-card-bg/80 !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-card-bg;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-accent-cyan/50 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-accent-cyan/80;
+}
