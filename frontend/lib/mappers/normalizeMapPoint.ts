@@ -20,6 +20,17 @@ export interface MapPoint {
   rainfall_mm: number
   city?:       string
   country?:    string
+  exposed_population?: number
+  baseline_vulnerability_score?: number
+  ml_features?: Record<string, number>
+  infrastructure?: {
+    hospitals?: number
+    schools?: number
+    road_km?: number
+    power_assets?: number
+    critical_facilities?: number
+  }
+  infrastructure_intelligence?: Record<string, number>
 }
 
 // ── Raw input union ───────────────────────────────────────────────────────────
@@ -160,6 +171,11 @@ export function normalizeRegionToMapPoint(
     rainfall_mm: extractRainfall(raw),
     city:        raw.city,
     country:     raw.country,
+    exposed_population: typeof raw.exposed_population === 'number' ? raw.exposed_population : undefined,
+    baseline_vulnerability_score: typeof raw.baseline_vulnerability_score === 'number' ? raw.baseline_vulnerability_score : undefined,
+    ml_features: raw.ml_features as Record<string, number> | undefined,
+    infrastructure: raw.infrastructure as MapPoint['infrastructure'],
+    infrastructure_intelligence: raw.infrastructure_intelligence as Record<string, number> | undefined,
   }
 }
 

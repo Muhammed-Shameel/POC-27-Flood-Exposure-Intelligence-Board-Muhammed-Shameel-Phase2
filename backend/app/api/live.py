@@ -86,6 +86,8 @@ class LocationData(BaseModel):
     region_notes: Optional[str] = None
     notable_flood_events: List[str] = Field(default_factory=list)
     ml_features: Dict[str, Any] = Field(default_factory=dict)
+    infrastructure: Dict[str, float] = Field(default_factory=dict)
+    infrastructure_source: Dict[str, Any] = Field(default_factory=dict)
     infrastructure_intelligence: Dict[str, float] = Field(default_factory=dict)
 
 
@@ -345,6 +347,8 @@ def _region_payload(region: Dict[str, Any], weather: Dict[str, Any], metrics: Di
         "region_notes": region.get("region_notes"),
         "notable_flood_events": region.get("notable_flood_events", []),
         "ml_features": region.get("ml_features", {}),
+        "infrastructure": region.get("infrastructure", {}),
+        "infrastructure_source": region.get("infrastructure_source", {}),
         "infrastructure_intelligence": _infrastructure_intelligence(region, rainfall),
     }
 

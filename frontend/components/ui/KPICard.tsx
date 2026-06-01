@@ -54,7 +54,7 @@ export default function KPICard({
       className={`
         relative overflow-hidden rounded-lg border transition-all duration-300
         ${accentBgMap[accentColor]}
-        ${isCompact ? 'p-3' : 'p-4'}
+        ${isCompact ? 'p-2' : 'p-1'}
         bg-gradient-to-br from-card-bg via-card-bg to-dark-bg
         backdrop-blur-md
       `}

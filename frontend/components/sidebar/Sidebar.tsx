@@ -100,19 +100,6 @@ export default function Sidebar({
 
       {/* SECTION E: Alerts Feed */}
       <AlertsFeed alerts={alerts.slice(0, 5)} />
-
-      {/* Download Data Button */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="button-secondary w-full text-center py-2 border border-accent-indigo text-accent-indigo rounded hover:bg-accent-indigo/10"
-        onClick={() => {
-          // Implement download functionality
-          console.log('Download mock data')
-        }}
-      >
-        📥 Download Sample Data
-      </motion.button>
     </motion.div>
   )
 }

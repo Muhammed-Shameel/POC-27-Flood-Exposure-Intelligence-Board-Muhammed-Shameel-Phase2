@@ -6,8 +6,8 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
   || '/backend-api'
 
 export const MAP_CENTER = {
-  lat: 22,
-  lng: 55,
+  lat: 25,
+  lng: 65,
 } as const
 
 export const MAP_BOUNDS = {

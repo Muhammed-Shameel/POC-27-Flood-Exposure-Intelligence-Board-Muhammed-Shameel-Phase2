@@ -12,11 +12,26 @@ The **Flood Exposure Intelligence Board** is a comprehensive disaster intelligen
 
 ### Key Features
 
-✅ **Real-Time Flood Risk Visualization**
+✅ **Map Intelligence Surface**
 - Interactive GeoJSON flood zone polygons
-- Dynamic severity heatmaps
-- Rainfall overlay system
-- Live infrastructure threat assessment
+- Dynamic severity heatmaps with rainfall overlay
+- **Collapsible Intelligence Panels**: Floating controls for infrastructure layers and severity distribution
+- Responsive layout maximizing map viewport area
+
+✅ **Intelligence Model (Gradient Boost)**
+- **GradientBoostingRegressor** pipeline for high-precision risk prediction
+- 20+ feature vector analysis per region
+- Real-time calibration against live weather telemetry
+
+✅ **Multi-Tier Cache System**
+- **L1 (In-Memory)**: Sub-millisecond session access
+- **L2 (File System)**: Backend persistent cache for weather and regional intelligence
+- **L3 (LocalStorage)**: Frontend persistence of the latest live snapshots
+
+✅ **Data Export System**
+- Consolidated **DOWNLOAD DATASET** control
+- Options for **Current Cache** (all regions) or **Selected City Cache**
+- Standards-compliant CSV telemetry output
 
 ✅ **Intelligent Risk Scoring**
 - Composite risk formula: 40% flood severity + 30% population exposure + 30% infrastructure exposure

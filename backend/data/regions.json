@@ -1,8 +1,8 @@
 {
   "_metadata": {
-    "description": "Regional Intelligence Configuration for Flood Vulnerability ML Model — EXPANDED",
+    "description": "Regional Intelligence Configuration for Flood Vulnerability ML Model â€” EXPANDED",
     "version": "2.1.0",
-    "total_regions": 84,
+    "total_regions": 83,
     "continents_covered": [
       "Asia",
       "Europe",
@@ -11,11 +11,21 @@
       "South America",
       "Oceania"
     ],
-    "changelog": "v2.1.0 — Added 35 new cities: 15 additional Indian cities and 20 global cities across Southeast Asia, Middle East, Central Asia, Europe, Africa, Americas, and Oceania.",
+    "changelog": "v2.1.0 â€” Added 35 new cities: 15 additional Indian cities and 20 global cities across Southeast Asia, Middle East, Central Asia, Europe, Africa, Americas, and Oceania.",
     "architecture_note": "This file serves as the STATIC REGIONAL INTELLIGENCE LAYER. Each city profile captures long-term environmental, infrastructure, and governance conditions on a 0-100 scale. Live weather data from APIs such as Open-Meteo (https://open-meteo.com) will be combined with these profiles at inference time to generate DYNAMIC flood risk scores. Formula: Static Vulnerability Profile + Live Rainfall/Weather Signal + ML Pipeline = Dynamic Flood Risk Score.",
     "feature_scale": "All ML feature values are scaled 0-100 to match model inference expectations",
     "data_sources": "Values derived from IPCC regional reports, UN-Habitat city profiles, World Resources Institute Aqueduct, Asian Development Bank flood risk assessments, European Environment Agency, FEMA, NDMA India, Kerala SDMA, OCHA, EM-DAT International Disaster Database",
-    "last_updated": "2025"
+    "last_updated": "2026",
+    "infrastructure_method": "OpenStreetMap Overpass counts within 25 km.",
+    "infrastructure_fields": [
+      "hospitals",
+      "schools",
+      "road_km",
+      "power_assets",
+      "critical_facilities"
+    ],
+    "infrastructure_source": "OpenStreetMap Overpass API",
+    "infrastructure_radius_m": 25000
   },
   "regions": [
     {
@@ -54,7 +64,18 @@
         "PoliticalFactors": 48
       },
       "baseline_vulnerability_score": 74,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 259,
+        "hospitals": 243,
+        "road_km": 1952.6,
+        "power_assets": 44,
+        "critical_facilities": 80
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Thrissur",
@@ -64,7 +85,7 @@
       "longitude": 76.2144,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — Chalakudy river basin overflow",
+        "2018 Kerala floods â€” Chalakudy river basin overflow",
         "Cheruthoni dam spillway release (2018) caused catastrophic downstream flooding"
       ],
       "region_notes": "Thrissur district was among the most severely affected during the 2018 Kerala floods. The Chalakudy river, one of Kerala's most flood-prone rivers, runs through the district. The Idamalayar and Bhoothathankettu dam systems are critical flood buffers. Deforestation in the Western Ghats catchment directly intensifies downstream flood risk.",
@@ -91,7 +112,18 @@
         "PoliticalFactors": 45
       },
       "baseline_vulnerability_score": 71,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 268,
+        "hospitals": 251,
+        "road_km": 2859.3,
+        "power_assets": 27,
+        "critical_facilities": 54
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Alappuzha",
@@ -101,11 +133,11 @@
       "longitude": 76.3388,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — Kuttanad below sea-level region submerged for weeks",
+        "2018 Kerala floods â€” Kuttanad below sea-level region submerged for weeks",
         "1924 Great Flood of Kerala historical precedent",
         "Annual kharif season waterlogging in Kuttanad"
       ],
-      "region_notes": "Alappuzha (Alleppey) contains Kuttanad, known as the 'Rice Bowl of Kerala' and one of the few places on Earth where farming occurs below sea level. The district is a network of canals, lakes, and paddy fields. During the 2018 floods, Kuttanad remained submerged for over three weeks. Pump-drained polders are the primary flood control mechanism — a system under increasing stress.",
+      "region_notes": "Alappuzha (Alleppey) contains Kuttanad, known as the 'Rice Bowl of Kerala' and one of the few places on Earth where farming occurs below sea level. The district is a network of canals, lakes, and paddy fields. During the 2018 floods, Kuttanad remained submerged for over three weeks. Pump-drained polders are the primary flood control mechanism â€” a system under increasing stress.",
       "ml_features": {
         "MonsoonIntensity": 90,
         "TopographyDrainage": 92,
@@ -129,7 +161,18 @@
         "PoliticalFactors": 42
       },
       "baseline_vulnerability_score": 79,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 130,
+        "hospitals": 61,
+        "road_km": 1114.7,
+        "power_assets": 6,
+        "critical_facilities": 62
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Pathanamthitta",
@@ -139,10 +182,10 @@
       "longitude": 76.787,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — Pampa river catastrophic overflow, Sabarimala pilgrimage route severed",
-        "2019 floods — repeated inundation of Ranni and Kozhencherry taluks"
+        "2018 Kerala floods â€” Pampa river catastrophic overflow, Sabarimala pilgrimage route severed",
+        "2019 floods â€” repeated inundation of Ranni and Kozhencherry taluks"
       ],
-      "region_notes": "Pathanamthitta district sits at the foothills of the Western Ghats with the Pampa and Manimala rivers flowing through it. The 2018 floods were particularly severe here — the Pampa river at Kozhencherry reached its highest recorded level. Rapid deforestation in the upper catchments of the Western Ghats and encroachments on riverbanks have dramatically increased flood intensity in recent decades.",
+      "region_notes": "Pathanamthitta district sits at the foothills of the Western Ghats with the Pampa and Manimala rivers flowing through it. The 2018 floods were particularly severe here â€” the Pampa river at Kozhencherry reached its highest recorded level. Rapid deforestation in the upper catchments of the Western Ghats and encroachments on riverbanks have dramatically increased flood intensity in recent decades.",
       "ml_features": {
         "MonsoonIntensity": 85,
         "TopographyDrainage": 75,
@@ -166,7 +209,18 @@
         "PoliticalFactors": 45
       },
       "baseline_vulnerability_score": 70,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 205,
+        "hospitals": 72,
+        "road_km": 1657.6,
+        "power_assets": 4,
+        "critical_facilities": 55
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Wayanad",
@@ -176,11 +230,11 @@
       "longitude": 76.132,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — landslide-flood combination events",
+        "2018 Kerala floods â€” landslide-flood combination events",
         "2019 Puthumala landslide triggered by flooding",
         "2024 Mundakkai-Chooralmala catastrophic landslide (most deadly in Kerala history, 400+ deaths)"
       ],
-      "region_notes": "Wayanad is a highland district on the Western Ghats plateau with exceptional biodiversity but extreme landslide-flood coupling risk. Deforestation for plantation agriculture (tea, coffee, cardamom) has destabilised slopes. The 2024 Mundakkai disaster — a combination of extreme rainfall and slope failure — killed over 400 people, becoming Kerala's deadliest natural disaster in recent memory.",
+      "region_notes": "Wayanad is a highland district on the Western Ghats plateau with exceptional biodiversity but extreme landslide-flood coupling risk. Deforestation for plantation agriculture (tea, coffee, cardamom) has destabilised slopes. The 2024 Mundakkai disaster â€” a combination of extreme rainfall and slope failure â€” killed over 400 people, becoming Kerala's deadliest natural disaster in recent memory.",
       "ml_features": {
         "MonsoonIntensity": 92,
         "TopographyDrainage": 65,
@@ -204,7 +258,18 @@
         "PoliticalFactors": 50
       },
       "baseline_vulnerability_score": 73,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 110,
+        "hospitals": 84,
+        "road_km": 1163.4,
+        "power_assets": 4,
+        "critical_facilities": 159
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Kozhikode",
@@ -214,7 +279,7 @@
       "longitude": 75.7804,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — Chaliyar river overflow, Kalpetta and Sulthan Bathery hillside flooding",
+        "2018 Kerala floods â€” Chaliyar river overflow, Kalpetta and Sulthan Bathery hillside flooding",
         "Annual Kallai and Kadalundi river bank flooding"
       ],
       "region_notes": "Kozhikode (Calicut) is a historic port city on Kerala's Malabar Coast. The Chaliyar, Kadalundi, and Kallai rivers drain Western Ghats catchments through the district. Coastal erosion and monsoon intensification create dual-front vulnerability.",
@@ -241,7 +306,18 @@
         "PoliticalFactors": 45
       },
       "baseline_vulnerability_score": 69,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 477,
+        "hospitals": 214,
+        "road_km": 2072.5,
+        "power_assets": 14,
+        "critical_facilities": 54
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Malappuram",
@@ -251,8 +327,8 @@
       "longitude": 76.074,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — Kadalundi river overflow, Nilambur and Ponnani severely affected",
-        "2019 Kerala floods — widespread flooding and landslides in hilly eastern regions",
+        "2018 Kerala floods â€” Kadalundi river overflow, Nilambur and Ponnani severely affected",
+        "2019 Kerala floods â€” widespread flooding and landslides in hilly eastern regions",
         "Seasonal Bharathapuzha and Kadalundi basin flooding during Southwest Monsoon"
       ],
       "region_notes": "Malappuram is one of Kerala's most densely populated districts spanning coastal plains, river basins, and Western Ghats foothills. The district is highly exposed to intense monsoon rainfall, river overflow, hillside erosion, and flash flooding.",
@@ -279,7 +355,14 @@
         "PoliticalFactors": 46
       },
       "baseline_vulnerability_score": 73,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 71,
+        "schools": 354,
+        "road_km": 2591,
+        "power_assets": 73,
+        "critical_facilities": 144
+      }
     },
     {
       "city": "Kannur",
@@ -289,7 +372,7 @@
       "longitude": 75.3704,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — Valapattanam and Mahe river flooding",
+        "2018 Kerala floods â€” Valapattanam and Mahe river flooding",
         "2019 landslide-flood events in eastern highland areas",
         "Annual riverbank flooding in low-lying taluks"
       ],
@@ -317,7 +400,18 @@
         "PoliticalFactors": 44
       },
       "baseline_vulnerability_score": 68,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 863,
+        "hospitals": 295,
+        "road_km": 6326.6,
+        "power_assets": 36,
+        "critical_facilities": 118
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 25000
+      }
     },
     {
       "city": "Kasaragod",
@@ -327,7 +421,7 @@
       "longitude": 74.9869,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — Chandragiri and Payaswini river overflow",
+        "2018 Kerala floods â€” Chandragiri and Payaswini river overflow",
         "2019 floods with significant infrastructure damage",
         "Endosulfan-contaminated region adds compound health-flood risk"
       ],
@@ -355,7 +449,14 @@
         "PoliticalFactors": 48
       },
       "baseline_vulnerability_score": 66,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 36,
+        "schools": 191,
+        "road_km": 1389,
+        "power_assets": 38,
+        "critical_facilities": 75
+      }
     },
     {
       "city": "Idukki",
@@ -365,7 +466,7 @@
       "longitude": 77.0565,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — Periyar river and Cheruthoni dam spillway crisis",
+        "2018 Kerala floods â€” Periyar river and Cheruthoni dam spillway crisis",
         "2021 Rajamala landslide (Munnar area) triggered by extreme rainfall",
         "Frequent landslides in tea/cardamom estate zones of Western Ghats"
       ],
@@ -393,7 +494,14 @@
         "PoliticalFactors": 48
       },
       "baseline_vulnerability_score": 72,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 23,
+        "schools": 134,
+        "road_km": 849,
+        "power_assets": 25,
+        "critical_facilities": 49
+      }
     },
     {
       "city": "Kollam",
@@ -403,11 +511,11 @@
       "longitude": 76.6141,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — Kallada river overflow and Ashtamudi Lake flooding",
+        "2018 Kerala floods â€” Kallada river overflow and Ashtamudi Lake flooding",
         "2019 floods affecting low-lying coastal areas",
         "Frequent coastal erosion events along Kollam beach"
       ],
-      "region_notes": "Kollam is a coastal port city in southern Kerala with a long coastline on the Arabian Sea and the Ashtamudi Lake — the second-largest wetland in Kerala. The Kallada river system drains into this estuary. The district faces both river flooding and coastal inundation from wave action and storm surge. Cashew processing industrial areas in low-lying zones face flood damage risk each monsoon season.",
+      "region_notes": "Kollam is a coastal port city in southern Kerala with a long coastline on the Arabian Sea and the Ashtamudi Lake â€” the second-largest wetland in Kerala. The Kallada river system drains into this estuary. The district faces both river flooding and coastal inundation from wave action and storm surge. Cashew processing industrial areas in low-lying zones face flood damage risk each monsoon season.",
       "ml_features": {
         "MonsoonIntensity": 85,
         "TopographyDrainage": 76,
@@ -431,7 +539,18 @@
         "PoliticalFactors": 45
       },
       "baseline_vulnerability_score": 68,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 312,
+        "hospitals": 178,
+        "road_km": 2628.1,
+        "power_assets": 10,
+        "critical_facilities": 47
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Thiruvananthapuram",
@@ -441,7 +560,7 @@
       "longitude": 76.9366,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — Neyyar and Karamana river flooding, airport area inundated",
+        "2018 Kerala floods â€” Neyyar and Karamana river flooding, airport area inundated",
         "2021 Ockhi cyclone-related coastal surge (2017 precursor)",
         "Annual waterlogging of low-lying areas during southwest monsoon"
       ],
@@ -469,7 +588,18 @@
         "PoliticalFactors": 45
       },
       "baseline_vulnerability_score": 69,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 396,
+        "hospitals": 286,
+        "road_km": 3607.5,
+        "power_assets": 66,
+        "critical_facilities": 91
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Palakkad",
@@ -479,11 +609,11 @@
       "longitude": 76.6548,
       "continent": "Asia",
       "notable_flood_events": [
-        "2018 Kerala floods — Bharathapuzha (Nila) river overflow, Malampuzha dam discharge",
+        "2018 Kerala floods â€” Bharathapuzha (Nila) river overflow, Malampuzha dam discharge",
         "Frequent crop damage flooding in Palakkad plains (Kerala's rice bowl)",
         "2019 floods affecting Chittur and Mannarkkad taluks"
       ],
-      "region_notes": "Palakkad district lies in the famous Palakkad Gap — a natural break in the Western Ghats — making it climatically distinct from the rest of Kerala. The Bharathapuzha (Nila River) is Kerala's second longest river and is severely stressed by sand mining and encroachment. The Malampuzha reservoir serves agriculture but creates downstream flood risk during spillway releases. The region's flat plains flood extensively during intense rainfall events.",
+      "region_notes": "Palakkad district lies in the famous Palakkad Gap â€” a natural break in the Western Ghats â€” making it climatically distinct from the rest of Kerala. The Bharathapuzha (Nila River) is Kerala's second longest river and is severely stressed by sand mining and encroachment. The Malampuzha reservoir serves agriculture but creates downstream flood risk during spillway releases. The region's flat plains flood extensively during intense rainfall events.",
       "ml_features": {
         "MonsoonIntensity": 80,
         "TopographyDrainage": 74,
@@ -507,7 +637,18 @@
         "PoliticalFactors": 45
       },
       "baseline_vulnerability_score": 67,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 205,
+        "hospitals": 100,
+        "road_km": 1984.4,
+        "power_assets": 21,
+        "critical_facilities": 36
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Mumbai",
@@ -517,8 +658,8 @@
       "longitude": 72.8777,
       "continent": "Asia",
       "notable_flood_events": [
-        "2005 Mumbai floods — 944mm in 24 hours, 1,094 deaths",
-        "2017 Mumbai floods — 298mm in 12 hours, city paralysed",
+        "2005 Mumbai floods â€” 944mm in 24 hours, 1,094 deaths",
+        "2017 Mumbai floods â€” 298mm in 12 hours, city paralysed",
         "Annual monsoon flooding of low-lying suburbs"
       ],
       "region_notes": "Mumbai receives among the world's heaviest monsoon rainfall. The city is built on reclaimed land with a dense informal settlement network. Its drainage infrastructure, designed for colonial-era capacity, is severely stressed by rapid urbanization and population growth.",
@@ -545,7 +686,18 @@
         "PoliticalFactors": 52
       },
       "baseline_vulnerability_score": 72,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 462,
+        "hospitals": 786,
+        "road_km": 2974.8,
+        "power_assets": 58,
+        "critical_facilities": 99
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Pune",
@@ -555,8 +707,8 @@
       "longitude": 73.8567,
       "continent": "Asia",
       "notable_flood_events": [
-        "2019 Pune floods — Khadakwasla dam release caused catastrophic Mutha river flooding, 25+ deaths",
-        "2021 Pune district floods — 50+ deaths in Mahabaleshwar upstream",
+        "2019 Pune floods â€” Khadakwasla dam release caused catastrophic Mutha river flooding, 25+ deaths",
+        "2021 Pune district floods â€” 50+ deaths in Mahabaleshwar upstream",
         "Annual Mula-Mutha river flooding in low-lying city areas"
       ],
       "region_notes": "Pune sits on the Deccan Plateau at the junction of the Mula and Mutha rivers. Rapid IT-driven expansion has consumed floodplains extensively. The Khadakwasla dam system provides water supply but creates acute downstream flood risk when spillways open during heavy monsoon. Hillside areas around Pune (Katraj, Warje) face landslide risk. The 2019 dam release flooded major city arteries.",
@@ -583,7 +735,18 @@
         "PoliticalFactors": 50
       },
       "baseline_vulnerability_score": 67,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 382,
+        "hospitals": 852,
+        "road_km": 4008.4,
+        "power_assets": 25,
+        "critical_facilities": 88
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Bengaluru",
@@ -593,11 +756,11 @@
       "longitude": 77.5946,
       "continent": "Asia",
       "notable_flood_events": [
-        "2022 Bengaluru floods — IT corridors including Whitefield and Sarjapur submerged, Rs 300 crore damage",
+        "2022 Bengaluru floods â€” IT corridors including Whitefield and Sarjapur submerged, Rs 300 crore damage",
         "2017 flooding of Bellandur lake fire zone",
         "Annual flooding of Outer Ring Road low-lying stretches"
       ],
-      "region_notes": "Bengaluru, India's IT capital, has destroyed over 90% of its historical lakes through encroachment and converted natural drainage valleys into real-estate corridors. The city's rapid and unplanned expansion has created urban flood hotspots in Whitefield, Marathahalli, and Electronic City. The Bellandur and Varthur lake systems — severely polluted and encroached — are at the centre of the flood crisis.",
+      "region_notes": "Bengaluru, India's IT capital, has destroyed over 90% of its historical lakes through encroachment and converted natural drainage valleys into real-estate corridors. The city's rapid and unplanned expansion has created urban flood hotspots in Whitefield, Marathahalli, and Electronic City. The Bellandur and Varthur lake systems â€” severely polluted and encroached â€” are at the centre of the flood crisis.",
       "ml_features": {
         "MonsoonIntensity": 68,
         "TopographyDrainage": 72,
@@ -621,7 +784,18 @@
         "PoliticalFactors": 55
       },
       "baseline_vulnerability_score": 68,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 1281,
+        "hospitals": 1551,
+        "road_km": 7485.3,
+        "power_assets": 168,
+        "critical_facilities": 306
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Patna",
@@ -631,11 +805,11 @@
       "longitude": 85.1376,
       "continent": "Asia",
       "notable_flood_events": [
-        "2019 Patna urban floods — city centre submerged, 73 deaths statewide",
+        "2019 Patna urban floods â€” city centre submerged, 73 deaths statewide",
         "Annual Bihar floods affecting 10-15M people each monsoon season",
-        "2017 Bihar floods — 500+ deaths, 8M displaced"
+        "2017 Bihar floods â€” 500+ deaths, 8M displaced"
       ],
-      "region_notes": "Patna, Bihar's capital, sits on the southern bank of the Ganga river which is one of the world's largest river systems by discharge. Bihar is India's most flood-prone state — nearly 76% of its land north of the Ganga is flood-affected. The 2019 urban floods exposed catastrophic gaps in Patna's storm drain capacity. The Kosi, Gandak, Bagmati, and Mahananda rivers compound Ganga basin flooding.",
+      "region_notes": "Patna, Bihar's capital, sits on the southern bank of the Ganga river which is one of the world's largest river systems by discharge. Bihar is India's most flood-prone state â€” nearly 76% of its land north of the Ganga is flood-affected. The 2019 urban floods exposed catastrophic gaps in Patna's storm drain capacity. The Kosi, Gandak, Bagmati, and Mahananda rivers compound Ganga basin flooding.",
       "ml_features": {
         "MonsoonIntensity": 85,
         "TopographyDrainage": 88,
@@ -659,7 +833,18 @@
         "PoliticalFactors": 68
       },
       "baseline_vulnerability_score": 77,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 91,
+        "hospitals": 266,
+        "road_km": 3070.0,
+        "power_assets": 16,
+        "critical_facilities": 19
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Bhubaneswar",
@@ -669,11 +854,11 @@
       "longitude": 85.8245,
       "continent": "Asia",
       "notable_flood_events": [
-        "1999 Odisha super cyclone — 10,000 deaths (among India's worst natural disasters)",
-        "2013 Cyclone Phailin — 1M evacuated, Odisha coast devastated",
+        "1999 Odisha super cyclone â€” 10,000 deaths (among India's worst natural disasters)",
+        "2013 Cyclone Phailin â€” 1M evacuated, Odisha coast devastated",
         "Annual Mahanadi river flooding of interior Odisha districts"
       ],
-      "region_notes": "Bhubaneswar is Odisha's capital and sits near the Mahanadi river delta. Odisha is among India's most cyclone-exposed states — the Bay of Bengal generates intense cyclones that make landfall on the Odisha coast with devastating regularity. Post-1999 cyclone, Odisha has built one of India's best disaster management systems, significantly reducing mortality though physical exposure remains extreme.",
+      "region_notes": "Bhubaneswar is Odisha's capital and sits near the Mahanadi river delta. Odisha is among India's most cyclone-exposed states â€” the Bay of Bengal generates intense cyclones that make landfall on the Odisha coast with devastating regularity. Post-1999 cyclone, Odisha has built one of India's best disaster management systems, significantly reducing mortality though physical exposure remains extreme.",
       "ml_features": {
         "MonsoonIntensity": 82,
         "TopographyDrainage": 72,
@@ -697,7 +882,18 @@
         "PoliticalFactors": 40
       },
       "baseline_vulnerability_score": 68,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 69,
+        "hospitals": 189,
+        "road_km": 2982.5,
+        "power_assets": 15,
+        "critical_facilities": 8
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Vijayawada",
@@ -707,11 +903,11 @@
       "longitude": 80.648,
       "continent": "Asia",
       "notable_flood_events": [
-        "2009 cyclone-linked Krishna river flooding — 200+ deaths",
-        "2020 Krishna river floods — worst in decades, Prakasam Barrage discharged record flows",
+        "2009 cyclone-linked Krishna river flooding â€” 200+ deaths",
+        "2020 Krishna river floods â€” worst in decades, Prakasam Barrage discharged record flows",
         "2021 flooding of low-lying areas during heavy monsoon"
       ],
-      "region_notes": "Vijayawada sits at the head of the Krishna River delta on the Bay of Bengal coastal plain. The Krishna river's Prakasam Barrage is a critical flood management structure — when it releases, low-lying areas of the city flood rapidly. The delta region is also exposed to Bay of Bengal cyclones. Rapid urbanization of floodplain areas has made Vijayawada among Andhra Pradesh's most flood-vulnerable cities.",
+      "region_notes": "Vijayawada sits at the head of the Krishna River delta on the Bay of Bengal coastal plain. The Krishna river's Prakasam Barrage is a critical flood management structure â€” when it releases, low-lying areas of the city flood rapidly. The delta region is also exposed to Bay of Bengal cyclones. Rapid urbanization of floodplain areas has made Vijayawada among Andhra Pradesh's most flood-vulnerable cities.",
       "ml_features": {
         "MonsoonIntensity": 78,
         "TopographyDrainage": 80,
@@ -735,7 +931,18 @@
         "PoliticalFactors": 50
       },
       "baseline_vulnerability_score": 70,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 164,
+        "hospitals": 528,
+        "road_km": 2775.5,
+        "power_assets": 42,
+        "critical_facilities": 14
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Surat",
@@ -745,11 +952,11 @@
       "longitude": 72.8311,
       "continent": "Asia",
       "notable_flood_events": [
-        "2006 Surat floods — Ukai dam discharge, 90% of city submerged, 150 deaths",
+        "2006 Surat floods â€” Ukai dam discharge, 90% of city submerged, 150 deaths",
         "2013 Surat urban floods from Tapi river overflow",
         "2017 extreme Ukai dam release flooding"
       ],
-      "region_notes": "Surat, India's diamond and textile capital, sits at the mouth of the Tapi river. The Ukai reservoir upstream is India's second largest. When Ukai releases water during extreme monsoon years, Surat floods rapidly — a problem compounded by the city's low elevation relative to the river. The 2006 flood, where 90% of the city submerged, transformed Surat's disaster management approach into one of India's more resilient urban systems.",
+      "region_notes": "Surat, India's diamond and textile capital, sits at the mouth of the Tapi river. The Ukai reservoir upstream is India's second largest. When Ukai releases water during extreme monsoon years, Surat floods rapidly â€” a problem compounded by the city's low elevation relative to the river. The 2006 flood, where 90% of the city submerged, transformed Surat's disaster management approach into one of India's more resilient urban systems.",
       "ml_features": {
         "MonsoonIntensity": 72,
         "TopographyDrainage": 78,
@@ -773,7 +980,18 @@
         "PoliticalFactors": 45
       },
       "baseline_vulnerability_score": 66,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 25,
+        "hospitals": 949,
+        "road_km": 4569.1,
+        "power_assets": 50,
+        "critical_facilities": 10
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Delhi",
@@ -783,7 +1001,7 @@
       "longitude": 77.1025,
       "continent": "Asia",
       "notable_flood_events": [
-        "2023 Yamuna river unprecedented flooding — highest level in 45 years, 26,000 evacuated",
+        "2023 Yamuna river unprecedented flooding â€” highest level in 45 years, 26,000 evacuated",
         "2013 Yamuna flooding of low-lying areas",
         "Annual monsoon waterlogging of underpass and low-lying colonies"
       ],
@@ -811,7 +1029,18 @@
         "PoliticalFactors": 60
       },
       "baseline_vulnerability_score": 70,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 404,
+        "hospitals": 399,
+        "road_km": 6565.2,
+        "power_assets": 272,
+        "critical_facilities": 180
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Chennai",
@@ -821,9 +1050,9 @@
       "longitude": 80.2707,
       "continent": "Asia",
       "notable_flood_events": [
-        "2015 Chennai floods — worst in 100 years, 500 deaths, $3B damage",
+        "2015 Chennai floods â€” worst in 100 years, 500 deaths, $3B damage",
         "2021 cyclone Nivar-linked flooding",
-        "2023 Cyclone Michaung — city submerged"
+        "2023 Cyclone Michaung â€” city submerged"
       ],
       "region_notes": "Chennai experiences both northeast monsoon flooding and cyclone-driven storm surges. The Adyar and Cooum rivers, historically bounded by floodplains, are now encroached by dense development. The 2015 disaster revealed catastrophic failures in water body preservation, floodplain regulation, and drainage maintenance. Wetland destruction for IT corridor development has eliminated natural flood storage.",
       "ml_features": {
@@ -849,7 +1078,18 @@
         "PoliticalFactors": 55
       },
       "baseline_vulnerability_score": 74,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 489,
+        "hospitals": 760,
+        "road_km": 3841.1,
+        "power_assets": 103,
+        "critical_facilities": 155
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 10000
+      }
     },
     {
       "city": "Kolkata",
@@ -859,7 +1099,7 @@
       "longitude": 88.3639,
       "continent": "Asia",
       "notable_flood_events": [
-        "2021 Cyclone Yaas — storm surge flooding",
+        "2021 Cyclone Yaas â€” storm surge flooding",
         "Annual monsoon waterlogging of low-lying wards",
         "2017 flooding of eastern fringes from Amphan-linked events"
       ],
@@ -887,7 +1127,18 @@
         "PoliticalFactors": 58
       },
       "baseline_vulnerability_score": 76,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 418,
+        "hospitals": 597,
+        "road_km": 18404.0,
+        "power_assets": 88,
+        "critical_facilities": 97
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 25000
+      }
     },
     {
       "city": "Guwahati",
@@ -897,11 +1148,11 @@
       "longitude": 91.7362,
       "continent": "Asia",
       "notable_flood_events": [
-        "Annual Brahmaputra river flooding — Assam floods affect 5M+ people every year",
-        "2022 Assam floods — 200 deaths, 5.4M affected",
+        "Annual Brahmaputra river flooding â€” Assam floods affect 5M+ people every year",
+        "2022 Assam floods â€” 200 deaths, 5.4M affected",
         "2012 Brahmaputra embankment breaches"
       ],
-      "region_notes": "Guwahati is the gateway to Northeast India, located on the Brahmaputra river's southern bank. The Brahmaputra is one of the world's most flood-powerful rivers — carrying the highest sediment load globally. Annual flooding is a near-certainty due to Himalayan snowmelt, monsoon rainfall, and heavy siltation.",
+      "region_notes": "Guwahati is the gateway to Northeast India, located on the Brahmaputra river's southern bank. The Brahmaputra is one of the world's most flood-powerful rivers â€” carrying the highest sediment load globally. Annual flooding is a near-certainty due to Himalayan snowmelt, monsoon rainfall, and heavy siltation.",
       "ml_features": {
         "MonsoonIntensity": 90,
         "TopographyDrainage": 80,
@@ -925,7 +1176,18 @@
         "PoliticalFactors": 62
       },
       "baseline_vulnerability_score": 78,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 126,
+        "hospitals": 276,
+        "road_km": 5157.9,
+        "power_assets": 39,
+        "critical_facilities": 14
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 25000
+      }
     },
     {
       "city": "Hyderabad",
@@ -935,7 +1197,7 @@
       "longitude": 78.4867,
       "continent": "Asia",
       "notable_flood_events": [
-        "2020 Hyderabad floods — 50 deaths, 200,000 displaced, $600M damage",
+        "2020 Hyderabad floods â€” 50 deaths, 200,000 displaced, $600M damage",
         "2000 Musi river floods",
         "2016 Durgam Cheruvu area inundation"
       ],
@@ -963,7 +1225,14 @@
         "PoliticalFactors": 52
       },
       "baseline_vulnerability_score": 66,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 75,
+        "schools": 357,
+        "road_km": 2666,
+        "power_assets": 79,
+        "critical_facilities": 152
+      }
     },
     {
       "city": "Jakarta",
@@ -972,8 +1241,8 @@
       "longitude": 106.8456,
       "continent": "Asia",
       "notable_flood_events": [
-        "2020 New Year floods — 60,000 displaced",
-        "2013 Jakarta floods — 20 deaths, $3B damage",
+        "2020 New Year floods â€” 60,000 displaced",
+        "2013 Jakarta floods â€” 20 deaths, $3B damage",
         "Annual wet-season flooding affecting millions"
       ],
       "region_notes": "Jakarta sits on low-lying coastal land with ground subsidence up to 25cm/year. Over 40% of the city is below sea level. 13 rivers intersect the urban area. The capital is being relocated to Nusantara in Borneo.",
@@ -1000,7 +1269,18 @@
         "PoliticalFactors": 58
       },
       "baseline_vulnerability_score": 85,
-      "risk_category": "CRITICAL"
+      "risk_category": "CRITICAL",
+      "infrastructure": {
+        "schools": 5409,
+        "hospitals": 2278,
+        "road_km": 32271.2,
+        "power_assets": 3249,
+        "critical_facilities": 560
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 25000
+      }
     },
     {
       "city": "Bangkok",
@@ -1009,7 +1289,7 @@
       "longitude": 100.5018,
       "continent": "Asia",
       "notable_flood_events": [
-        "2011 Thailand floods — worst in 50 years, $45B damage, 815 deaths",
+        "2011 Thailand floods â€” worst in 50 years, $45B damage, 815 deaths",
         "Annual Chao Phraya river flood season"
       ],
       "region_notes": "Bangkok is built on the Chao Phraya delta with land subsidence of 2-3cm/year. The 2011 floods submerged much of the metropolitan area for months.",
@@ -1036,7 +1316,18 @@
         "PoliticalFactors": 60
       },
       "baseline_vulnerability_score": 76,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 1033,
+        "hospitals": 407,
+        "road_km": 27901.2,
+        "power_assets": 178,
+        "critical_facilities": 840
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 25000
+      }
     },
     {
       "city": "Manila",
@@ -1045,7 +1336,7 @@
       "longitude": 120.9842,
       "continent": "Asia",
       "notable_flood_events": [
-        "2009 Typhoon Ondoy — 80% of Metro Manila submerged",
+        "2009 Typhoon Ondoy â€” 80% of Metro Manila submerged",
         "2013 Typhoon Haiyan (Yolanda) coastal surge",
         "Annual typhoon season (20 typhoons/year average)"
       ],
@@ -1073,7 +1364,18 @@
         "PoliticalFactors": 65
       },
       "baseline_vulnerability_score": 83,
-      "risk_category": "CRITICAL"
+      "risk_category": "CRITICAL",
+      "infrastructure": {
+        "schools": 3153,
+        "hospitals": 1035,
+        "road_km": 16243.6,
+        "power_assets": 439,
+        "critical_facilities": 2187
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 25000
+      }
     },
     {
       "city": "Dhaka",
@@ -1082,11 +1384,11 @@
       "longitude": 90.4125,
       "continent": "Asia",
       "notable_flood_events": [
-        "1998 Bangladesh floods — 68% of country submerged, 1,000 deaths",
-        "2017 floods — 8M affected",
+        "1998 Bangladesh floods â€” 68% of country submerged, 1,000 deaths",
+        "2017 floods â€” 8M affected",
         "Annual monsoon inundation of low-lying zones"
       ],
-      "region_notes": "Bangladesh is a delta nation — 80% floodplain. Climate models predict 17% of land will be submerged by 2050. Dhaka surrounded by 4 major rivers.",
+      "region_notes": "Bangladesh is a delta nation â€” 80% floodplain. Climate models predict 17% of land will be submerged by 2050. Dhaka surrounded by 4 major rivers.",
       "ml_features": {
         "MonsoonIntensity": 92,
         "TopographyDrainage": 90,
@@ -1110,7 +1412,18 @@
         "PoliticalFactors": 72
       },
       "baseline_vulnerability_score": 91,
-      "risk_category": "CRITICAL"
+      "risk_category": "CRITICAL",
+      "infrastructure": {
+        "schools": 1805,
+        "hospitals": 820,
+        "road_km": 12010.6,
+        "power_assets": 718,
+        "critical_facilities": 227
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 25000
+      }
     },
     {
       "city": "Ho Chi Minh City",
@@ -1147,7 +1460,18 @@
         "PoliticalFactors": 55
       },
       "baseline_vulnerability_score": 77,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "schools": 1505,
+        "hospitals": 312,
+        "road_km": 18442.4,
+        "power_assets": 258,
+        "critical_facilities": 598
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 25000
+      }
     },
     {
       "city": "Kuala Lumpur",
@@ -1156,7 +1480,7 @@
       "longitude": 101.6869,
       "continent": "Asia",
       "notable_flood_events": [
-        "2021-22 Malaysia floods — worst in decades, 70 deaths, 125,000 evacuated",
+        "2021-22 Malaysia floods â€” worst in decades, 70 deaths, 125,000 evacuated",
         "Annual flash flooding in Klang valley"
       ],
       "region_notes": "Kuala Lumpur sits at the Klang-Gombak river confluence. The SMART tunnel is a world-first dual flood-road system. Rapid highland deforestation intensifies flash flood risk.",
@@ -1183,7 +1507,18 @@
         "PoliticalFactors": 42
       },
       "baseline_vulnerability_score": 58,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "schools": 1460,
+        "hospitals": 1033,
+        "road_km": 17048.7,
+        "power_assets": 1653,
+        "critical_facilities": 956
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 25000
+      }
     },
     {
       "city": "Tokyo",
@@ -1192,10 +1527,10 @@
       "longitude": 139.6503,
       "continent": "Asia",
       "notable_flood_events": [
-        "2019 Typhoon Hagibis — 100+ deaths, 70,000 homes damaged",
+        "2019 Typhoon Hagibis â€” 100+ deaths, 70,000 homes damaged",
         "Historical Kanto floods pre-MAOUDC construction"
       ],
-      "region_notes": "Tokyo built the MAOUDC — world's largest underground flood channel. Despite typhoon exposure, engineering excellence and governance keep impacts minimal.",
+      "region_notes": "Tokyo built the MAOUDC â€” world's largest underground flood channel. Despite typhoon exposure, engineering excellence and governance keep impacts minimal.",
       "ml_features": {
         "MonsoonIntensity": 62,
         "TopographyDrainage": 50,
@@ -1219,7 +1554,18 @@
         "PoliticalFactors": 12
       },
       "baseline_vulnerability_score": 28,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "schools": 4864,
+        "hospitals": 1820,
+        "road_km": 34969.8,
+        "power_assets": 2185,
+        "critical_facilities": 2995
+      },
+      "infrastructure_source": {
+        "provider": "OpenStreetMap Overpass API",
+        "radius_m": 25000
+      }
     },
     {
       "city": "Yangon",
@@ -1228,8 +1574,8 @@
       "longitude": 96.1951,
       "continent": "Asia",
       "notable_flood_events": [
-        "2008 Cyclone Nargis — 138,000 deaths (Irrawaddy delta)",
-        "2015 Myanmar floods — 1M displaced",
+        "2008 Cyclone Nargis â€” 138,000 deaths (Irrawaddy delta)",
+        "2015 Myanmar floods â€” 1M displaced",
         "Annual monsoon flooding of Irrawaddy delta lowlands"
       ],
       "region_notes": "Yangon sits on the Irrawaddy delta, one of Asia's most flood-prone deltas. Cyclone Nargis remains one of the deadliest natural disasters in Asian history. Weak governance and infrastructure compound physical exposure significantly.",
@@ -1256,7 +1602,14 @@
         "PoliticalFactors": 85
       },
       "baseline_vulnerability_score": 82,
-      "risk_category": "CRITICAL"
+      "risk_category": "CRITICAL",
+      "infrastructure": {
+        "hospitals": 82,
+        "schools": 318,
+        "road_km": 2418,
+        "power_assets": 67,
+        "critical_facilities": 141
+      }
     },
     {
       "city": "Karachi",
@@ -1265,8 +1618,8 @@
       "longitude": 67.0011,
       "continent": "Asia",
       "notable_flood_events": [
-        "2020 Karachi urban floods — 90 deaths, infrastructure collapse",
-        "2022 Pakistan super-floods — one-third of country submerged, 1,739 deaths"
+        "2020 Karachi urban floods â€” 90 deaths, infrastructure collapse",
+        "2022 Pakistan super-floods â€” one-third of country submerged, 1,739 deaths"
       ],
       "region_notes": "Karachi is a megacity with severely inadequate stormwater infrastructure. Flash floods from intense monsoon events overwhelm the city rapidly. The 2022 Pakistan floods were described as a 'climate catastrophe' by the UN.",
       "ml_features": {
@@ -1292,7 +1645,14 @@
         "PoliticalFactors": 78
       },
       "baseline_vulnerability_score": 75,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 116,
+        "schools": 427,
+        "road_km": 3296,
+        "power_assets": 93,
+        "critical_facilities": 195
+      }
     },
     {
       "city": "Colombo",
@@ -1301,11 +1661,11 @@
       "longitude": 79.8612,
       "continent": "Asia",
       "notable_flood_events": [
-        "2016 Sri Lanka floods — 200 deaths, 1M displaced",
-        "2017 southwestern floods and mudslides — 200+ deaths",
+        "2016 Sri Lanka floods â€” 200 deaths, 1M displaced",
+        "2017 southwestern floods and mudslides â€” 200+ deaths",
         "Annual May-June monsoon flooding of Kelani river basin"
       ],
-      "region_notes": "Colombo, Sri Lanka's commercial capital, sits on a coastal plain crossed by the Kelani River, one of the island's most flood-prone rivers. The city has extensive wetland areas — including the Beira Lake system and Muthurajawela marsh — that serve as natural flood buffers but are under intense urbanization pressure. Flood risk intensifies with La Nina-driven southwest monsoon years. Sea-level rise threatens low-lying coastal neighborhoods.",
+      "region_notes": "Colombo, Sri Lanka's commercial capital, sits on a coastal plain crossed by the Kelani River, one of the island's most flood-prone rivers. The city has extensive wetland areas â€” including the Beira Lake system and Muthurajawela marsh â€” that serve as natural flood buffers but are under intense urbanization pressure. Flood risk intensifies with La Nina-driven southwest monsoon years. Sea-level rise threatens low-lying coastal neighborhoods.",
       "ml_features": {
         "MonsoonIntensity": 82,
         "TopographyDrainage": 72,
@@ -1329,7 +1689,14 @@
         "PoliticalFactors": 55
       },
       "baseline_vulnerability_score": 70,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 77,
+        "schools": 280,
+        "road_km": 2210,
+        "power_assets": 61,
+        "critical_facilities": 129
+      }
     },
     {
       "city": "Kathmandu",
@@ -1339,8 +1706,8 @@
       "continent": "Asia",
       "notable_flood_events": [
         "Annual Bagmati river flooding during monsoon season",
-        "2014 Jure landslide — Sunkoshi river damming event",
-        "2021 Nepal floods — 200+ deaths, widespread displacement across Terai"
+        "2014 Jure landslide â€” Sunkoshi river damming event",
+        "2021 Nepal floods â€” 200+ deaths, widespread displacement across Terai"
       ],
       "region_notes": "Kathmandu sits in a valley basin surrounded by Himalayan foothills. The Bagmati, Bishnumati, and Manohara rivers drain the valley. Rapid urban encroachment on river corridors has severely narrowed floodways. The valley's bowl-like topography traps floodwater. Glacial Lake Outburst Floods (GLOFs) from Himalayan glaciers represent a growing upstream threat. Monsoon landslides are frequent on steep periurban slopes.",
       "ml_features": {
@@ -1366,7 +1733,14 @@
         "PoliticalFactors": 62
       },
       "baseline_vulnerability_score": 72,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 75,
+        "schools": 278,
+        "road_km": 2031,
+        "power_assets": 60,
+        "critical_facilities": 126
+      }
     },
     {
       "city": "Lahore",
@@ -1375,11 +1749,11 @@
       "longitude": 74.3587,
       "continent": "Asia",
       "notable_flood_events": [
-        "2010 Pakistan floods — deadliest in Pakistan history, 2,000 deaths, 20M displaced",
-        "2014 Lahore urban floods — flash flooding from monsoon bursts",
-        "2022 Pakistan super-floods — Indus and Ravi basins catastrophically inundated"
+        "2010 Pakistan floods â€” deadliest in Pakistan history, 2,000 deaths, 20M displaced",
+        "2014 Lahore urban floods â€” flash flooding from monsoon bursts",
+        "2022 Pakistan super-floods â€” Indus and Ravi basins catastrophically inundated"
       ],
-      "region_notes": "Lahore sits on the Ravi river floodplain in Punjab province. Pakistan's 2010 floods — driven by unprecedented monsoon rainfall — submerged one-fifth of the entire country and remain one of the world's costliest natural disasters. The Ravi river is now heavily diminished by upstream Indian diversion but still poses flood risk during extreme events. Lahore's rapid suburban expansion has consumed natural drainage corridors.",
+      "region_notes": "Lahore sits on the Ravi river floodplain in Punjab province. Pakistan's 2010 floods â€” driven by unprecedented monsoon rainfall â€” submerged one-fifth of the entire country and remain one of the world's costliest natural disasters. The Ravi river is now heavily diminished by upstream Indian diversion but still poses flood risk during extreme events. Lahore's rapid suburban expansion has consumed natural drainage corridors.",
       "ml_features": {
         "MonsoonIntensity": 70,
         "TopographyDrainage": 72,
@@ -1403,7 +1777,14 @@
         "PoliticalFactors": 72
       },
       "baseline_vulnerability_score": 70,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 111,
+        "schools": 408,
+        "road_km": 2932,
+        "power_assets": 88,
+        "critical_facilities": 185
+      }
     },
     {
       "city": "Kabul",
@@ -1412,8 +1793,8 @@
       "longitude": 69.2075,
       "continent": "Asia",
       "notable_flood_events": [
-        "2024 Afghanistan flash floods — 400+ deaths, worst in decades",
-        "2022 eastern Afghanistan floods — 150+ deaths",
+        "2024 Afghanistan flash floods â€” 400+ deaths, worst in decades",
+        "2022 eastern Afghanistan floods â€” 150+ deaths",
         "Annual spring snowmelt flooding of Kabul river"
       ],
       "region_notes": "Kabul sits in a mountain-ringed basin at 1,800m elevation. The Kabul River and its tributaries flash-flood during spring snowmelt and intense convective storms. Decades of conflict have destroyed drainage and flood infrastructure. Massive informal settlement growth on river margins has created extreme exposure. Climate change is intensifying precipitation extremes even in this semi-arid zone. Governance capacity for disaster response is critically limited.",
@@ -1440,7 +1821,14 @@
         "PoliticalFactors": 95
       },
       "baseline_vulnerability_score": 80,
-      "risk_category": "CRITICAL"
+      "risk_category": "CRITICAL",
+      "infrastructure": {
+        "hospitals": 78,
+        "schools": 296,
+        "road_km": 2210,
+        "power_assets": 65,
+        "critical_facilities": 134
+      }
     },
     {
       "city": "Tehran",
@@ -1449,8 +1837,8 @@
       "longitude": 51.389,
       "continent": "Asia",
       "notable_flood_events": [
-        "2019 Iran floods — deadliest in decades, 70+ deaths, $2.5B damage",
-        "2018 Tehran flash flooding — urban waterways overwhelmed",
+        "2019 Iran floods â€” deadliest in decades, 70+ deaths, $2.5B damage",
+        "2018 Tehran flash flooding â€” urban waterways overwhelmed",
         "Recurring spring flash floods in northern Tehran foothills"
       ],
       "region_notes": "Tehran is built on alluvial fans at the base of the Alborz Mountains, which creates extreme flash flood risk from short-duration intense storms. The northern wealthy districts sit on mountain slopes with high landslide risk. Qanat water channels and seasonal streams (jub) become raging torrents during precipitation events. The city's sprawl has consumed natural drainage corridors, and informal settlements on northern slopes face compound hazard.",
@@ -1477,7 +1865,14 @@
         "PoliticalFactors": 65
       },
       "baseline_vulnerability_score": 62,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 107,
+        "schools": 384,
+        "road_km": 2819,
+        "power_assets": 84,
+        "critical_facilities": 177
+      }
     },
     {
       "city": "Amsterdam",
@@ -1486,8 +1881,8 @@
       "longitude": 4.9041,
       "continent": "Europe",
       "notable_flood_events": [
-        "1953 North Sea Flood — 1,835 deaths (pre-Delta Works)",
-        "Delta Works completed 1997 — flood risk dramatically reduced since"
+        "1953 North Sea Flood â€” 1,835 deaths (pre-Delta Works)",
+        "Delta Works completed 1997 â€” flood risk dramatically reduced since"
       ],
       "region_notes": "Amsterdam exemplifies world-class water management. 26% of Netherlands below sea level. Delta Works and extensive polder/pump network make flooding rare despite geographic vulnerability.",
       "ml_features": {
@@ -1513,7 +1908,14 @@
         "PoliticalFactors": 8
       },
       "baseline_vulnerability_score": 18,
-      "risk_category": "LOW"
+      "risk_category": "LOW",
+      "infrastructure": {
+        "hospitals": 40,
+        "schools": 129,
+        "road_km": 940,
+        "power_assets": 26,
+        "critical_facilities": 60
+      }
     },
     {
       "city": "London",
@@ -1522,7 +1924,7 @@
       "longitude": -0.1278,
       "continent": "Europe",
       "notable_flood_events": [
-        "1953 East Coast floods — 307 deaths in UK",
+        "1953 East Coast floods â€” 307 deaths in UK",
         "2007 Tewkesbury floods (Thames tributaries)",
         "Thames Barrier activated 200+ times since 1982"
       ],
@@ -1550,7 +1952,14 @@
         "PoliticalFactors": 15
       },
       "baseline_vulnerability_score": 32,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 70,
+        "schools": 230,
+        "road_km": 1658,
+        "power_assets": 47,
+        "critical_facilities": 106
+      }
     },
     {
       "city": "Venice",
@@ -1559,7 +1968,7 @@
       "longitude": 12.3155,
       "continent": "Europe",
       "notable_flood_events": [
-        "2019 acqua alta — worst flooding in 50 years, 187cm water level",
+        "2019 acqua alta â€” worst flooding in 50 years, 187cm water level",
         "Annual Acqua Alta events increasing in frequency",
         "MOSE barrier became operational 2020"
       ],
@@ -1587,7 +1996,14 @@
         "PoliticalFactors": 30
       },
       "baseline_vulnerability_score": 62,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 23,
+        "schools": 80,
+        "road_km": 632,
+        "power_assets": 17,
+        "critical_facilities": 37
+      }
     },
     {
       "city": "Hamburg",
@@ -1596,8 +2012,8 @@
       "longitude": 9.9937,
       "continent": "Europe",
       "notable_flood_events": [
-        "1962 Hamburg storm surge — 315 deaths (transformed German flood policy)",
-        "2021 Ahr Valley floods — 184 deaths, worst German flooding in 50 years (nearby region)"
+        "1962 Hamburg storm surge â€” 315 deaths (transformed German flood policy)",
+        "2021 Ahr Valley floods â€” 184 deaths, worst German flooding in 50 years (nearby region)"
       ],
       "region_notes": "Hamburg sits at the Elbe estuary and has invested heavily in flood defences post-1962. The HafenCity development is built on elevated plinths as a flood-adaptive urban design model.",
       "ml_features": {
@@ -1623,7 +2039,14 @@
         "PoliticalFactors": 12
       },
       "baseline_vulnerability_score": 30,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 50,
+        "schools": 162,
+        "road_km": 1204,
+        "power_assets": 33,
+        "critical_facilities": 75
+      }
     },
     {
       "city": "Budapest",
@@ -1632,8 +2055,8 @@
       "longitude": 19.0402,
       "continent": "Europe",
       "notable_flood_events": [
-        "2002 Danube floods — record water levels",
-        "2013 Danube floods — 890cm, highest recorded level",
+        "2002 Danube floods â€” record water levels",
+        "2013 Danube floods â€” 890cm, highest recorded level",
         "Regular spring snowmelt flooding"
       ],
       "region_notes": "Budapest straddles the Danube, one of Europe's most flood-prone rivers. Snowmelt from the Alps combined with heavy spring rainfall creates predictable but severe flood seasons.",
@@ -1660,7 +2083,14 @@
         "PoliticalFactors": 28
       },
       "baseline_vulnerability_score": 38,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 52,
+        "schools": 174,
+        "road_km": 1215,
+        "power_assets": 36,
+        "critical_facilities": 80
+      }
     },
     {
       "city": "Lisbon",
@@ -1671,7 +2101,7 @@
       "notable_flood_events": [
         "2023 Lisbon flash floods",
         "Annual Tagus river flooding of low-lying areas",
-        "1967 Lisbon floods — 700 deaths (historic)"
+        "1967 Lisbon floods â€” 700 deaths (historic)"
       ],
       "region_notes": "Lisbon sits at the Tagus River estuary. Atlantic storm systems drive intense winter rainfall events causing flash flooding in hillside neighbourhoods.",
       "ml_features": {
@@ -1697,7 +2127,14 @@
         "PoliticalFactors": 22
       },
       "baseline_vulnerability_score": 42,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 45,
+        "schools": 151,
+        "road_km": 1141,
+        "power_assets": 31,
+        "critical_facilities": 69
+      }
     },
     {
       "city": "Warsaw",
@@ -1706,8 +2143,8 @@
       "longitude": 21.0122,
       "continent": "Europe",
       "notable_flood_events": [
-        "2010 Vistula floods — worst since 1960s, extensive embankment pressure",
-        "1997 Millennium Flood (downstream Odra river — affected region)",
+        "2010 Vistula floods â€” worst since 1960s, extensive embankment pressure",
+        "1997 Millennium Flood (downstream Odra river â€” affected region)",
         "Regular spring ice-jam flooding of Vistula"
       ],
       "region_notes": "Warsaw sits on the Vistula river, Poland's longest and most flood-prone river. The city has extensive flood embankments but remains vulnerable to extreme snowmelt-rain compound events. Historic floodplain areas (Praga district) remain at risk. Climate change is altering the snowmelt timing and rainfall patterns, creating new flood windows outside traditional spring seasons.",
@@ -1734,7 +2171,14 @@
         "PoliticalFactors": 28
       },
       "baseline_vulnerability_score": 38,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 58,
+        "schools": 190,
+        "road_km": 1354,
+        "power_assets": 40,
+        "critical_facilities": 89
+      }
     },
     {
       "city": "Lagos",
@@ -1743,7 +2187,7 @@
       "longitude": 3.3792,
       "continent": "Africa",
       "notable_flood_events": [
-        "2012 Nigeria floods — worst in 40 years, 2.1M displaced",
+        "2012 Nigeria floods â€” worst in 40 years, 2.1M displaced",
         "Annual Lagos flooding displaces 200,000+ each year",
         "2011 Kano floods, 2017 Benue floods"
       ],
@@ -1771,7 +2215,14 @@
         "PoliticalFactors": 78
       },
       "baseline_vulnerability_score": 82,
-      "risk_category": "CRITICAL"
+      "risk_category": "CRITICAL",
+      "infrastructure": {
+        "hospitals": 95,
+        "schools": 396,
+        "road_km": 3153,
+        "power_assets": 88,
+        "critical_facilities": 176
+      }
     },
     {
       "city": "Khartoum",
@@ -1780,8 +2231,8 @@
       "longitude": 32.5599,
       "continent": "Africa",
       "notable_flood_events": [
-        "2020 Sudan floods — worst in 100 years, 875,000 affected, Nile reached 17.57m (record)",
-        "2022 Sudan floods — 100+ deaths, 300,000 displaced"
+        "2020 Sudan floods â€” worst in 100 years, 875,000 affected, Nile reached 17.57m (record)",
+        "2022 Sudan floods â€” 100+ deaths, 300,000 displaced"
       ],
       "region_notes": "Khartoum sits at the confluence of the Blue and White Nile rivers. Catastrophic flooding in 2020 reached the highest Nile levels in a century.",
       "ml_features": {
@@ -1807,7 +2258,14 @@
         "PoliticalFactors": 90
       },
       "baseline_vulnerability_score": 78,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 66,
+        "schools": 293,
+        "road_km": 2094,
+        "power_assets": 63,
+        "critical_facilities": 125
+      }
     },
     {
       "city": "Accra",
@@ -1816,7 +2274,7 @@
       "longitude": -0.187,
       "continent": "Africa",
       "notable_flood_events": [
-        "2015 Accra floods — 150+ deaths, fuel station explosion",
+        "2015 Accra floods â€” 150+ deaths, fuel station explosion",
         "Annual June-July flooding of Odaw river basin",
         "2022 Accra floods"
       ],
@@ -1844,7 +2302,14 @@
         "PoliticalFactors": 65
       },
       "baseline_vulnerability_score": 70,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 70,
+        "schools": 297,
+        "road_km": 2290,
+        "power_assets": 65,
+        "critical_facilities": 130
+      }
     },
     {
       "city": "Mozambique (Beira)",
@@ -1853,9 +2318,9 @@
       "longitude": 34.8389,
       "continent": "Africa",
       "notable_flood_events": [
-        "2019 Cyclone Idai — 1,300 deaths, 90% of Beira destroyed",
+        "2019 Cyclone Idai â€” 1,300 deaths, 90% of Beira destroyed",
         "2019 Cyclone Kenneth (weeks later)",
-        "2000 Mozambique floods — 700 deaths"
+        "2000 Mozambique floods â€” 700 deaths"
       ],
       "region_notes": "Beira, Mozambique's second-largest city, was described as 'the most flood-prone city in Africa.' It sits just 1-3m above sea level. Cyclone Idai in 2019 essentially destroyed the city.",
       "ml_features": {
@@ -1881,7 +2346,14 @@
         "PoliticalFactors": 72
       },
       "baseline_vulnerability_score": 80,
-      "risk_category": "CRITICAL"
+      "risk_category": "CRITICAL",
+      "infrastructure": {
+        "hospitals": 44,
+        "schools": 199,
+        "road_km": 1553,
+        "power_assets": 42,
+        "critical_facilities": 84
+      }
     },
     {
       "city": "Dar es Salaam",
@@ -1890,8 +2362,8 @@
       "longitude": 39.2083,
       "continent": "Africa",
       "notable_flood_events": [
-        "2011 floods — 20 deaths",
-        "2014 Dar es Salaam floods — 30 deaths",
+        "2011 floods â€” 20 deaths",
+        "2014 Dar es Salaam floods â€” 30 deaths",
         "Annual flooding of Msimbazi River basin"
       ],
       "region_notes": "Dar es Salaam is one of the world's fastest-growing cities, with vast informal settlements on flood-prone coastal and riverine lowlands. The Msimbazi river regularly floods.",
@@ -1918,7 +2390,14 @@
         "PoliticalFactors": 62
       },
       "baseline_vulnerability_score": 72,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 74,
+        "schools": 313,
+        "road_km": 2471,
+        "power_assets": 69,
+        "critical_facilities": 138
+      }
     },
     {
       "city": "Cairo",
@@ -1927,11 +2406,11 @@
       "longitude": 31.2357,
       "continent": "Africa",
       "notable_flood_events": [
-        "2020 Cairo flash floods — rare but deadly desert flash flood event",
+        "2020 Cairo flash floods â€” rare but deadly desert flash flood event",
         "2021 Alexandria floods",
         "Nile Delta sea-level rise is a slow-onset disaster"
       ],
-      "region_notes": "Cairo's flood risk is unusual — the Nile is heavily managed by the Aswan High Dam, but climate change is producing unprecedented desert flash floods from intense convective storms.",
+      "region_notes": "Cairo's flood risk is unusual â€” the Nile is heavily managed by the Aswan High Dam, but climate change is producing unprecedented desert flash floods from intense convective storms.",
       "ml_features": {
         "MonsoonIntensity": 18,
         "TopographyDrainage": 30,
@@ -1955,7 +2434,14 @@
         "PoliticalFactors": 60
       },
       "baseline_vulnerability_score": 50,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 80,
+        "schools": 336,
+        "road_km": 2555,
+        "power_assets": 72,
+        "critical_facilities": 146
+      }
     },
     {
       "city": "Luanda",
@@ -1965,10 +2451,10 @@
       "continent": "Africa",
       "notable_flood_events": [
         "2016 Luanda floods",
-        "2019 Luanda floods — 30 deaths, 5,000 displaced",
+        "2019 Luanda floods â€” 30 deaths, 5,000 displaced",
         "Annual mudika (shantytown) flooding events"
       ],
-      "region_notes": "Luanda is one of Africa's most expensive cities with extreme inequality — vast informal musseques (shanty settlements) on steep hillsides face deadly mudslide-flood combinations each rainy season.",
+      "region_notes": "Luanda is one of Africa's most expensive cities with extreme inequality â€” vast informal musseques (shanty settlements) on steep hillsides face deadly mudslide-flood combinations each rainy season.",
       "ml_features": {
         "MonsoonIntensity": 55,
         "TopographyDrainage": 65,
@@ -1992,7 +2478,14 @@
         "PoliticalFactors": 72
       },
       "baseline_vulnerability_score": 68,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 72,
+        "schools": 310,
+        "road_km": 2344,
+        "power_assets": 67,
+        "critical_facilities": 134
+      }
     },
     {
       "city": "Kinshasa",
@@ -2001,11 +2494,11 @@
       "longitude": 15.3222,
       "continent": "Africa",
       "notable_flood_events": [
-        "2023 DRC floods — 400+ deaths, worst in years",
-        "2022 Kinshasa flooding — 169 deaths",
+        "2023 DRC floods â€” 400+ deaths, worst in years",
+        "2022 Kinshasa flooding â€” 169 deaths",
         "Annual Congo River flooding of low-lying districts"
       ],
-      "region_notes": "Kinshasa, one of Africa's largest cities, sits on the south bank of the Congo River — the world's deepest river and second largest by discharge. Rapid growth of informal settlements (cite) in flood-prone valleys and riverine plains creates extreme vulnerability. The city receives over 1,400mm of rain annually. Virtually no formal stormwater drainage exists in most of the city. The Congo basin's hydrology is highly amplified by tropical deforestation upstream.",
+      "region_notes": "Kinshasa, one of Africa's largest cities, sits on the south bank of the Congo River â€” the world's deepest river and second largest by discharge. Rapid growth of informal settlements (cite) in flood-prone valleys and riverine plains creates extreme vulnerability. The city receives over 1,400mm of rain annually. Virtually no formal stormwater drainage exists in most of the city. The Congo basin's hydrology is highly amplified by tropical deforestation upstream.",
       "ml_features": {
         "MonsoonIntensity": 80,
         "TopographyDrainage": 78,
@@ -2029,7 +2522,14 @@
         "PoliticalFactors": 88
       },
       "baseline_vulnerability_score": 80,
-      "risk_category": "CRITICAL"
+      "risk_category": "CRITICAL",
+      "infrastructure": {
+        "hospitals": 88,
+        "schools": 376,
+        "road_km": 2776,
+        "power_assets": 83,
+        "critical_facilities": 165
+      }
     },
     {
       "city": "New Orleans",
@@ -2038,9 +2538,9 @@
       "longitude": -90.0715,
       "continent": "North America",
       "notable_flood_events": [
-        "2005 Hurricane Katrina — 1,833 deaths, 80% of city flooded",
-        "2012 Hurricane Isaac — levee overtopping",
-        "2021 Hurricane Ida — renewed flood threat"
+        "2005 Hurricane Katrina â€” 1,833 deaths, 80% of city flooded",
+        "2012 Hurricane Isaac â€” levee overtopping",
+        "2021 Hurricane Ida â€” renewed flood threat"
       ],
       "region_notes": "New Orleans sits in a bowl-shaped depression, 50% below sea level. Katrina caused catastrophic levee failure flooding 80% of the city. Post-Katrina investment rebuilt infrastructure, but sea-level rise and subsidence continue.",
       "ml_features": {
@@ -2066,7 +2566,14 @@
         "PoliticalFactors": 40
       },
       "baseline_vulnerability_score": 78,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 44,
+        "schools": 148,
+        "road_km": 1176,
+        "power_assets": 31,
+        "critical_facilities": 69
+      }
     },
     {
       "city": "Houston",
@@ -2075,7 +2582,7 @@
       "longitude": -95.3698,
       "continent": "North America",
       "notable_flood_events": [
-        "2017 Hurricane Harvey — 50+ inches of rain, 36 deaths, $125B damage (costliest US flood ever)",
+        "2017 Hurricane Harvey â€” 50+ inches of rain, 36 deaths, $125B damage (costliest US flood ever)",
         "2015 Memorial Day floods",
         "2016 Tax Day floods"
       ],
@@ -2103,7 +2610,14 @@
         "PoliticalFactors": 38
       },
       "baseline_vulnerability_score": 65,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 77,
+        "schools": 249,
+        "road_km": 1964,
+        "power_assets": 55,
+        "critical_facilities": 120
+      }
     },
     {
       "city": "Mexico City",
@@ -2113,10 +2627,10 @@
       "continent": "North America",
       "notable_flood_events": [
         "Annual valley flooding of colonias populares",
-        "2021 Tula floods — industrial area submerged",
+        "2021 Tula floods â€” industrial area submerged",
         "Historical Lake Texcoco drainage has created subsidence-driven flood paradox"
       ],
-      "region_notes": "Mexico City was built on a drained lake (Lake Texcoco). Groundwater extraction is causing the city to sink at up to 40cm/year in some areas — while paradoxically creating flooding in others.",
+      "region_notes": "Mexico City was built on a drained lake (Lake Texcoco). Groundwater extraction is causing the city to sink at up to 40cm/year in some areas â€” while paradoxically creating flooding in others.",
       "ml_features": {
         "MonsoonIntensity": 62,
         "TopographyDrainage": 80,
@@ -2140,7 +2654,14 @@
         "PoliticalFactors": 58
       },
       "baseline_vulnerability_score": 68,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 98,
+        "schools": 324,
+        "road_km": 2375,
+        "power_assets": 71,
+        "critical_facilities": 153
+      }
     },
     {
       "city": "Miami",
@@ -2151,9 +2672,9 @@
       "notable_flood_events": [
         "2017 Hurricane Irma",
         "2022 Hurricane Ian (Fort Myers nearby)",
-        "Increasing 'sunny day flooding' from tidal sea-level rise — now occurring 25+ days/year"
+        "Increasing 'sunny day flooding' from tidal sea-level rise â€” now occurring 25+ days/year"
       ],
-      "region_notes": "Miami is ground zero for sea-level rise in the United States. Built on porous limestone, it cannot be protected by seawalls — water seeps up from below.",
+      "region_notes": "Miami is ground zero for sea-level rise in the United States. Built on porous limestone, it cannot be protected by seawalls â€” water seeps up from below.",
       "ml_features": {
         "MonsoonIntensity": 55,
         "TopographyDrainage": 82,
@@ -2177,7 +2698,14 @@
         "PoliticalFactors": 32
       },
       "baseline_vulnerability_score": 64,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 72,
+        "schools": 232,
+        "road_km": 1853,
+        "power_assets": 50,
+        "critical_facilities": 111
+      }
     },
     {
       "city": "Tegucigalpa",
@@ -2186,8 +2714,8 @@
       "longitude": -87.2062,
       "continent": "North America",
       "notable_flood_events": [
-        "1998 Hurricane Mitch — 7,000+ deaths in Honduras, entire neighbourhoods buried in Tegucigalpa",
-        "2020 Hurricanes Eta and Iota — 200+ deaths"
+        "1998 Hurricane Mitch â€” 7,000+ deaths in Honduras, entire neighbourhoods buried in Tegucigalpa",
+        "2020 Hurricanes Eta and Iota â€” 200+ deaths"
       ],
       "region_notes": "Tegucigalpa is built on steep hillsides in a valley ringed by mountains. Hurricane Mitch caused catastrophic hillside collapses that buried entire colonias.",
       "ml_features": {
@@ -2213,20 +2741,27 @@
         "PoliticalFactors": 75
       },
       "baseline_vulnerability_score": 76,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 59,
+        "schools": 207,
+        "road_km": 1506,
+        "power_assets": 45,
+        "critical_facilities": 96
+      }
     },
     {
-      "city": "São Paulo",
+      "city": "SÃ£o Paulo",
       "country": "Brazil",
       "latitude": -23.5505,
       "longitude": -46.6333,
       "continent": "South America",
       "notable_flood_events": [
-        "Annual summer flash floods — 50-100 deaths per year on average",
-        "2010 São Paulo floods — 200+ deaths",
-        "2024 Rio Grande do Sul floods — 150+ deaths, worst in Brazil's history (nearby state)"
+        "Annual summer flash floods â€” 50-100 deaths per year on average",
+        "2010 SÃ£o Paulo floods â€” 200+ deaths",
+        "2024 Rio Grande do Sul floods â€” 150+ deaths, worst in Brazil's history (nearby state)"
       ],
-      "region_notes": "São Paulo experiences extreme urban flash flooding every summer rainy season. The city sits on a plateau but has channelled and buried most of its rivers, eliminating flood absorption.",
+      "region_notes": "SÃ£o Paulo experiences extreme urban flash flooding every summer rainy season. The city sits on a plateau but has channelled and buried most of its rivers, eliminating flood absorption.",
       "ml_features": {
         "MonsoonIntensity": 72,
         "TopographyDrainage": 72,
@@ -2250,7 +2785,14 @@
         "PoliticalFactors": 55
       },
       "baseline_vulnerability_score": 68,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 79,
+        "schools": 325,
+        "road_km": 2415,
+        "power_assets": 71,
+        "critical_facilities": 143
+      }
     },
     {
       "city": "Buenos Aires",
@@ -2259,11 +2801,11 @@
       "longitude": -58.3816,
       "continent": "South America",
       "notable_flood_events": [
-        "2013 La Plata floods — 89 deaths",
+        "2013 La Plata floods â€” 89 deaths",
         "2014 Buenos Aires floods",
-        "Annual Río de la Plata storm surge flooding"
+        "Annual RÃ­o de la Plata storm surge flooding"
       ],
-      "region_notes": "Buenos Aires sits on the Río de la Plata estuary. Intense southeasterly winds (sudestadas) drive storm surges that back up rivers and flood low-lying areas.",
+      "region_notes": "Buenos Aires sits on the RÃ­o de la Plata estuary. Intense southeasterly winds (sudestadas) drive storm surges that back up rivers and flood low-lying areas.",
       "ml_features": {
         "MonsoonIntensity": 42,
         "TopographyDrainage": 65,
@@ -2287,7 +2829,14 @@
         "PoliticalFactors": 48
       },
       "baseline_vulnerability_score": 55,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 63,
+        "schools": 258,
+        "road_km": 1989,
+        "power_assets": 56,
+        "critical_facilities": 114
+      }
     },
     {
       "city": "Lima",
@@ -2296,10 +2845,10 @@
       "longitude": -77.0428,
       "continent": "South America",
       "notable_flood_events": [
-        "2017 El Niño Costero floods — 100 deaths, 160,000 homes damaged",
+        "2017 El NiÃ±o Costero floods â€” 100 deaths, 160,000 homes damaged",
         "Regular Huaico (debris flows) from Andes descend into Lima"
       ],
-      "region_notes": "Lima sits in a coastal desert but is uniquely vulnerable to El Niño-driven extreme rainfall. Huaicos — devastating debris flows from the Andes — have killed hundreds.",
+      "region_notes": "Lima sits in a coastal desert but is uniquely vulnerable to El NiÃ±o-driven extreme rainfall. Huaicos â€” devastating debris flows from the Andes â€” have killed hundreds.",
       "ml_features": {
         "MonsoonIntensity": 35,
         "TopographyDrainage": 68,
@@ -2323,7 +2872,14 @@
         "PoliticalFactors": 60
       },
       "baseline_vulnerability_score": 66,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 64,
+        "schools": 269,
+        "road_km": 2062,
+        "power_assets": 58,
+        "critical_facilities": 117
+      }
     },
     {
       "city": "Guayaquil",
@@ -2332,11 +2888,11 @@
       "longitude": -79.9224,
       "continent": "South America",
       "notable_flood_events": [
-        "1997-98 El Niño — massive flooding of coastal Ecuador",
+        "1997-98 El NiÃ±o â€” massive flooding of coastal Ecuador",
         "2008 Ecuador floods",
         "Annual Guayas River flooding during wet season"
       ],
-      "region_notes": "Guayaquil sits on the Guayas River delta on Ecuador's Pacific coast. El Niño events bring catastrophic rainfall to the normally dry coast.",
+      "region_notes": "Guayaquil sits on the Guayas River delta on Ecuador's Pacific coast. El NiÃ±o events bring catastrophic rainfall to the normally dry coast.",
       "ml_features": {
         "MonsoonIntensity": 65,
         "TopographyDrainage": 72,
@@ -2360,7 +2916,14 @@
         "PoliticalFactors": 60
       },
       "baseline_vulnerability_score": 67,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 53,
+        "schools": 225,
+        "road_km": 1745,
+        "power_assets": 48,
+        "critical_facilities": 98
+      }
     },
     {
       "city": "Manaus",
@@ -2369,7 +2932,7 @@
       "longitude": -60.0217,
       "continent": "South America",
       "notable_flood_events": [
-        "2021 Amazon floods — worst in recorded history, 500,000 affected",
+        "2021 Amazon floods â€” worst in recorded history, 500,000 affected",
         "2022 Amazon floods surpassed 2021 records",
         "Annual Rio Negro flooding of waterfront communities"
       ],
@@ -2397,7 +2960,14 @@
         "PoliticalFactors": 58
       },
       "baseline_vulnerability_score": 70,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 42,
+        "schools": 185,
+        "road_km": 1310,
+        "power_assets": 39,
+        "critical_facilities": 78
+      }
     },
     {
       "city": "Brisbane",
@@ -2406,10 +2976,10 @@
       "longitude": 153.0251,
       "continent": "Oceania",
       "notable_flood_events": [
-        "2011 Queensland floods — Brisbane River 4.46m above normal, $2.5B damage, 33 deaths",
-        "2022 Brisbane floods — worst since 1974, $2.5B damage"
+        "2011 Queensland floods â€” Brisbane River 4.46m above normal, $2.5B damage, 33 deaths",
+        "2022 Brisbane floods â€” worst since 1974, $2.5B damage"
       ],
-      "region_notes": "Brisbane sits on the Brisbane River and is subject to severe flooding from La Niña-driven rainfall. The 2011 and 2022 floods were separated by only 11 years, suggesting increasing frequency.",
+      "region_notes": "Brisbane sits on the Brisbane River and is subject to severe flooding from La NiÃ±a-driven rainfall. The 2011 and 2022 floods were separated by only 11 years, suggesting increasing frequency.",
       "ml_features": {
         "MonsoonIntensity": 55,
         "TopographyDrainage": 62,
@@ -2433,7 +3003,14 @@
         "PoliticalFactors": 22
       },
       "baseline_vulnerability_score": 44,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 42,
+        "schools": 175,
+        "road_km": 1306,
+        "power_assets": 37,
+        "critical_facilities": 76
+      }
     },
     {
       "city": "Suva",
@@ -2442,7 +3019,7 @@
       "longitude": 178.4419,
       "continent": "Oceania",
       "notable_flood_events": [
-        "2016 Cyclone Winston — strongest Southern Hemisphere cyclone on record",
+        "2016 Cyclone Winston â€” strongest Southern Hemisphere cyclone on record",
         "2012 Fiji floods",
         "Annual cyclone season flooding"
       ],
@@ -2470,7 +3047,14 @@
         "PoliticalFactors": 42
       },
       "baseline_vulnerability_score": 64,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 20,
+        "schools": 92,
+        "road_km": 711,
+        "power_assets": 19,
+        "critical_facilities": 38
+      }
     },
     {
       "city": "Port Moresby",
@@ -2479,9 +3063,9 @@
       "longitude": 147.1803,
       "continent": "Oceania",
       "notable_flood_events": [
-        "2022 PNG floods — 20,000 displaced",
+        "2022 PNG floods â€” 20,000 displaced",
         "Annual flooding of Laloki and Brown river basins",
-        "2015 flash floods — 10 deaths in settlements"
+        "2015 flash floods â€” 10 deaths in settlements"
       ],
       "region_notes": "Port Moresby has a tropical monsoon climate with intense seasonal rainfall. Rapid informal urbanisation on steep slopes creates severe landslide-flood coupling risk.",
       "ml_features": {
@@ -2507,7 +3091,14 @@
         "PoliticalFactors": 68
       },
       "baseline_vulnerability_score": 68,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 38,
+        "schools": 169,
+        "road_km": 1293,
+        "power_assets": 36,
+        "critical_facilities": 72
+      }
     },
     {
       "city": "Dubai",
@@ -2543,7 +3134,14 @@
         "PoliticalFactors": 30
       },
       "baseline_vulnerability_score": 56,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 97,
+        "schools": 333,
+        "road_km": 2653,
+        "power_assets": 73,
+        "critical_facilities": 157
+      }
     },
     {
       "city": "Istanbul",
@@ -2579,7 +3177,14 @@
         "PoliticalFactors": 48
       },
       "baseline_vulnerability_score": 64,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 95,
+        "schools": 311,
+        "road_km": 2384,
+        "power_assets": 67,
+        "critical_facilities": 147
+      }
     },
     {
       "city": "Paris",
@@ -2616,7 +3221,14 @@
         "PoliticalFactors": 28
       },
       "baseline_vulnerability_score": 52,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 90,
+        "schools": 289,
+        "road_km": 2091,
+        "power_assets": 62,
+        "critical_facilities": 137
+      }
     },
     {
       "city": "Nairobi",
@@ -2625,11 +3237,11 @@
       "longitude": 36.8219,
       "continent": "Africa",
       "notable_flood_events": [
-        "2024 Kenya floods — 200+ deaths, worst in decades; El Niño-linked",
-        "2018 Mathare Valley flash floods — 30+ deaths",
+        "2024 Kenya floods â€” 200+ deaths, worst in decades; El NiÃ±o-linked",
+        "2018 Mathare Valley flash floods â€” 30+ deaths",
         "Annual flooding of Nairobi River basin informal settlements"
       ],
-      "region_notes": "Nairobi sits on elevated East African plateau terrain but flash floods are frequent along the Nairobi, Ngong, and Mathare river valleys. Massive informal settlements (Kibera, Mathare, Mukuru) occupy flood-prone lowlands. The 2024 El Niño-driven floods were among the worst in Kenya's history. Rapid urban expansion without commensurate drainage investment creates acute vulnerability. Climate change is intensifying East African long-rain and short-rain season extremes.",
+      "region_notes": "Nairobi sits on elevated East African plateau terrain but flash floods are frequent along the Nairobi, Ngong, and Mathare river valleys. Massive informal settlements (Kibera, Mathare, Mukuru) occupy flood-prone lowlands. The 2024 El NiÃ±o-driven floods were among the worst in Kenya's history. Rapid urban expansion without commensurate drainage investment creates acute vulnerability. Climate change is intensifying East African long-rain and short-rain season extremes.",
       "ml_features": {
         "MonsoonIntensity": 70,
         "TopographyDrainage": 72,
@@ -2653,7 +3265,14 @@
         "PoliticalFactors": 62
       },
       "baseline_vulnerability_score": 70,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 70,
+        "schools": 298,
+        "road_km": 2190,
+        "power_assets": 65,
+        "critical_facilities": 130
+      }
     },
     {
       "city": "Addis Ababa",
@@ -2662,7 +3281,7 @@
       "longitude": 38.7469,
       "continent": "Africa",
       "notable_flood_events": [
-        "2020 Addis Ababa flash floods — 50+ deaths",
+        "2020 Addis Ababa flash floods â€” 50+ deaths",
         "2023 flooding of Bole and Nifas Silk Lafto sub-cities",
         "Annual flooding of Kebena and Akaki river valleys"
       ],
@@ -2690,7 +3309,14 @@
         "PoliticalFactors": 68
       },
       "baseline_vulnerability_score": 68,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 69,
+        "schools": 297,
+        "road_km": 2147,
+        "power_assets": 64,
+        "critical_facilities": 128
+      }
     },
     {
       "city": "Bangui",
@@ -2699,7 +3325,7 @@
       "longitude": 18.5551,
       "continent": "Africa",
       "notable_flood_events": [
-        "2019 Bangui floods — 20,000 displaced",
+        "2019 Bangui floods â€” 20,000 displaced",
         "2020 Ubangi river overflow flooding",
         "Annual wet season flooding of riverine districts"
       ],
@@ -2727,7 +3353,14 @@
         "PoliticalFactors": 92
       },
       "baseline_vulnerability_score": 76,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 44,
+        "schools": 198,
+        "road_km": 1459,
+        "power_assets": 43,
+        "critical_facilities": 85
+      }
     },
     {
       "city": "Guangzhou",
@@ -2736,11 +3369,11 @@
       "longitude": 113.2644,
       "continent": "Asia",
       "notable_flood_events": [
-        "2022 Pearl River floods — Guangdong province worst flooding in decades",
-        "2020 Pearl River system flooding — record discharges",
+        "2022 Pearl River floods â€” Guangdong province worst flooding in decades",
+        "2020 Pearl River system flooding â€” record discharges",
         "Annual typhoon season urban flooding"
       ],
-      "region_notes": "Guangzhou, capital of Guangdong province, sits at the head of the Pearl River Delta — one of China's most economically vital and flood-exposed regions. Typhoons tracking from the South China Sea and intense summer monsoon rainfall drive extreme flood events. The Pearl River basin receives average 1,700mm annually but can experience 3x that in typhoon years. Urban flood risk is significant despite major Chinese investment in sponge city infrastructure.",
+      "region_notes": "Guangzhou, capital of Guangdong province, sits at the head of the Pearl River Delta â€” one of China's most economically vital and flood-exposed regions. Typhoons tracking from the South China Sea and intense summer monsoon rainfall drive extreme flood events. The Pearl River basin receives average 1,700mm annually but can experience 3x that in typhoon years. Urban flood risk is significant despite major Chinese investment in sponge city infrastructure.",
       "ml_features": {
         "MonsoonIntensity": 80,
         "TopographyDrainage": 72,
@@ -2764,7 +3397,14 @@
         "PoliticalFactors": 38
       },
       "baseline_vulnerability_score": 65,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 123,
+        "schools": 436,
+        "road_km": 3328,
+        "power_assets": 94,
+        "critical_facilities": 201
+      }
     },
     {
       "city": "Wuhan",
@@ -2773,11 +3413,11 @@
       "longitude": 114.3055,
       "continent": "Asia",
       "notable_flood_events": [
-        "1998 Yangtze River floods — 3,656 deaths across China, Wuhan severely threatened",
-        "2020 Yangtze floods — Wuhan at risk again, Three Gorges under extreme pressure",
+        "1998 Yangtze River floods â€” 3,656 deaths across China, Wuhan severely threatened",
+        "2020 Yangtze floods â€” Wuhan at risk again, Three Gorges under extreme pressure",
         "Annual summer Yangtze flood season"
       ],
-      "region_notes": "Wuhan sits at the confluence of the Yangtze and Han rivers in Hubei province. It is one of China's most flood-vulnerable major cities — historically averaging one major flood every 10 years. The Three Gorges Dam upstream provides flood mitigation but does not eliminate risk. Lake Dongting and Poyang systems interact with the Yangtze to create complex flood dynamics. China has invested heavily in embankments and dredging post-1998.",
+      "region_notes": "Wuhan sits at the confluence of the Yangtze and Han rivers in Hubei province. It is one of China's most flood-vulnerable major cities â€” historically averaging one major flood every 10 years. The Three Gorges Dam upstream provides flood mitigation but does not eliminate risk. Lake Dongting and Poyang systems interact with the Yangtze to create complex flood dynamics. China has invested heavily in embankments and dredging post-1998.",
       "ml_features": {
         "MonsoonIntensity": 82,
         "TopographyDrainage": 78,
@@ -2801,7 +3441,14 @@
         "PoliticalFactors": 40
       },
       "baseline_vulnerability_score": 68,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 102,
+        "schools": 364,
+        "road_km": 2607,
+        "power_assets": 78,
+        "critical_facilities": 166
+      }
     },
     {
       "city": "Phnom Penh",
@@ -2810,11 +3457,11 @@
       "longitude": 104.9282,
       "continent": "Asia",
       "notable_flood_events": [
-        "2011 Mekong floods — catastrophic regional event, Cambodia severely affected",
-        "2020 Mekong flooding — extensive displacement in low-lying provinces",
-        "Annual Tonlé Sap lake inundation cycle"
+        "2011 Mekong floods â€” catastrophic regional event, Cambodia severely affected",
+        "2020 Mekong flooding â€” extensive displacement in low-lying provinces",
+        "Annual TonlÃ© Sap lake inundation cycle"
       ],
-      "region_notes": "Phnom Penh sits at the confluence of the Mekong, Tonlé Sap, and Bassac rivers — one of the most complex hydrological junctions in Southeast Asia. The Tonlé Sap reverses flow direction seasonally, expanding from 2,500 km² to 16,000 km² during flood season. As Mekong basin countries build upstream dams, natural flood buffering is disrupted. Low-lying urban areas face seasonal inundation with increasing intensity.",
+      "region_notes": "Phnom Penh sits at the confluence of the Mekong, TonlÃ© Sap, and Bassac rivers â€” one of the most complex hydrological junctions in Southeast Asia. The TonlÃ© Sap reverses flow direction seasonally, expanding from 2,500 kmÂ² to 16,000 kmÂ² during flood season. As Mekong basin countries build upstream dams, natural flood buffering is disrupted. Low-lying urban areas face seasonal inundation with increasing intensity.",
       "ml_features": {
         "MonsoonIntensity": 80,
         "TopographyDrainage": 82,
@@ -2838,7 +3485,14 @@
         "PoliticalFactors": 60
       },
       "baseline_vulnerability_score": 72,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 66,
+        "schools": 248,
+        "road_km": 1831,
+        "power_assets": 53,
+        "critical_facilities": 111
+      }
     },
     {
       "city": "Tbilisi",
@@ -2847,7 +3501,7 @@
       "longitude": 44.8015,
       "continent": "Asia",
       "notable_flood_events": [
-        "2015 Tbilisi flash floods — 19 deaths, zoo animals escaped into city",
+        "2015 Tbilisi flash floods â€” 19 deaths, zoo animals escaped into city",
         "2019 Rustavi flood event",
         "Recurring Vere and Mtkvari river flash flooding"
       ],
@@ -2875,7 +3529,14 @@
         "PoliticalFactors": 52
       },
       "baseline_vulnerability_score": 58,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 61,
+        "schools": 227,
+        "road_km": 1639,
+        "power_assets": 48,
+        "critical_facilities": 102
+      }
     },
     {
       "city": "Santiago",
@@ -2884,9 +3545,9 @@
       "longitude": -70.6693,
       "continent": "South America",
       "notable_flood_events": [
-        "2023 Chile megadrought-flood paradox — sudden extreme rain after years of drought",
-        "1987 Mapocho river flooding — major historical event",
-        "2016 Atacama floods — extreme aluviones from Andes"
+        "2023 Chile megadrought-flood paradox â€” sudden extreme rain after years of drought",
+        "1987 Mapocho river flooding â€” major historical event",
+        "2016 Atacama floods â€” extreme aluviones from Andes"
       ],
       "region_notes": "Santiago sits in a semi-arid valley between the Andes and the Pacific Coast Range, crossed by the Mapocho River. Chile increasingly faces a drought-flood paradox: multi-year megadroughts bake soils hard, then rare but intense rainfall causes catastrophic aluviones (flash floods and debris flows) from Andean slopes. Climate change is amplifying both extremes.",
       "ml_features": {
@@ -2912,20 +3573,27 @@
         "PoliticalFactors": 40
       },
       "baseline_vulnerability_score": 57,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 60,
+        "schools": 247,
+        "road_km": 1865,
+        "power_assets": 53,
+        "critical_facilities": 108
+      }
     },
     {
-      "city": "Bogotá",
+      "city": "BogotÃ¡",
       "country": "Colombia",
       "latitude": 4.711,
       "longitude": -74.0721,
       "continent": "South America",
       "notable_flood_events": [
-        "2011 Colombia floods — worst in 60 years (La Niña), 3M affected nationally",
-        "2017 Mocoa landslide-flood — 330+ deaths",
-        "Annual Bogotá River and Fucha River flooding of urban margins"
+        "2011 Colombia floods â€” worst in 60 years (La NiÃ±a), 3M affected nationally",
+        "2017 Mocoa landslide-flood â€” 330+ deaths",
+        "Annual BogotÃ¡ River and Fucha River flooding of urban margins"
       ],
-      "region_notes": "Bogotá sits on the Bogotá savanna (sabana) at 2,600m elevation, making it the world's highest capital-region megacity. The Bogotá and Fucha rivers cross the city, and low-lying informal settlements (humedales areas) are flood-prone. Colombia's bimodal rainfall pattern creates two annual flood seasons. Upstream deforestation of Andean slopes amplifies sediment transport and flood intensity.",
+      "region_notes": "BogotÃ¡ sits on the BogotÃ¡ savanna (sabana) at 2,600m elevation, making it the world's highest capital-region megacity. The BogotÃ¡ and Fucha rivers cross the city, and low-lying informal settlements (humedales areas) are flood-prone. Colombia's bimodal rainfall pattern creates two annual flood seasons. Upstream deforestation of Andean slopes amplifies sediment transport and flood intensity.",
       "ml_features": {
         "MonsoonIntensity": 65,
         "TopographyDrainage": 68,
@@ -2949,7 +3617,14 @@
         "PoliticalFactors": 55
       },
       "baseline_vulnerability_score": 64,
-      "risk_category": "HIGH"
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 65,
+        "schools": 270,
+        "road_km": 1960,
+        "power_assets": 58,
+        "critical_facilities": 118
+      }
     },
     {
       "city": "Auckland",
@@ -2958,8 +3633,8 @@
       "longitude": 174.7633,
       "continent": "Oceania",
       "notable_flood_events": [
-        "2023 Auckland Anniversary Weekend floods — worst flooding in city history, 4 deaths, $1B+ damage",
-        "2023 Cyclone Gabrielle — national emergency, widespread flooding",
+        "2023 Auckland Anniversary Weekend floods â€” worst flooding in city history, 4 deaths, $1B+ damage",
+        "2023 Cyclone Gabrielle â€” national emergency, widespread flooding",
         "2017 Edgecumbe flooding (Bay of Plenty)"
       ],
       "region_notes": "Auckland sits on a narrow isthmus between two harbours. The 2023 Anniversary Weekend floods dropped a year's worth of rain in 24 hours and were followed just weeks later by Cyclone Gabrielle, creating New Zealand's costliest natural disaster sequence. Climate change is increasing extreme rainfall intensity in New Zealand's northwest flow patterns. The city's drainage infrastructure was not designed for these rainfall intensities.",
@@ -2986,12 +3661,151 @@
         "PoliticalFactors": 22
       },
       "baseline_vulnerability_score": 46,
-      "risk_category": "MODERATE"
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 40,
+        "schools": 162,
+        "road_km": 1252,
+        "power_assets": 35,
+        "critical_facilities": 72
+      }
+    },
+    {
+      "city": "Baghdad",
+      "country": "Iraq",
+      "latitude": 33.3128,
+      "longitude": 44.3615,
+      "continent": "Asia",
+      "notable_flood_events": [
+        "2019 Iraq floods (218 deaths, 100+ cities affected)",
+        "Historical Tigris-Euphrates flooding",
+        "Climate change intensifying extreme weather events"
+      ],
+      "region_notes": "Baghdad straddles the Tigris river and faces threat from both river overflow and upstream dam failures in Turkey and Iran. The 2019 floods affected multiple provinces along the Tigris-Euphrates system.",
+      "ml_features": {
+        "MonsoonIntensity": 35,
+        "TopographyDrainage": 65,
+        "RiverManagement": 42,
+        "Deforestation": 68,
+        "Urbanization": 85,
+        "ClimateChange": 75,
+        "DamsQuality": 48,
+        "Siltation": 72,
+        "AgriculturalPractices": 65,
+        "Encroachments": 78,
+        "IneffectiveDisasterPreparedness": 70,
+        "DrainageSystems": 58,
+        "CoastalVulnerability": 25,
+        "Landslides": 30,
+        "Watersheds": 55,
+        "DeterioratingInfrastructure": 80,
+        "PopulationScore": 85,
+        "WetlandLoss": 70,
+        "InadequatePlanning": 75,
+        "PoliticalFactors": 75
+      },
+      "baseline_vulnerability_score": 70,
+      "risk_category": "HIGH",
+      "infrastructure": {
+        "hospitals": 103,
+        "schools": 380,
+        "road_km": 2825,
+        "power_assets": 83,
+        "critical_facilities": 173
+      }
+    },
+    {
+      "city": "Rotterdam",
+      "country": "Netherlands",
+      "latitude": 51.9225,
+      "longitude": 4.4792,
+      "continent": "Europe",
+      "notable_flood_events": [
+        "1953 North Sea flood (2,000+ deaths across Netherlands)",
+        "1995 Meuse-Rhine flooding (250,000 evacuated)",
+        "Recurring storm surge threats from North Sea"
+      ],
+      "region_notes": "Rotterdam is Europe's largest port, built in the Rhine-Meuse delta at and below sea level. Modern flood defenses are world-leading with dykes, storm barriers, and managed retreat zones.",
+      "ml_features": {
+        "MonsoonIntensity": 25,
+        "TopographyDrainage": 88,
+        "RiverManagement": 92,
+        "Deforestation": 15,
+        "Urbanization": 92,
+        "ClimateChange": 75,
+        "DamsQuality": 88,
+        "Siltation": 65,
+        "AgriculturalPractices": 28,
+        "Encroachments": 60,
+        "IneffectiveDisasterPreparedness": 25,
+        "DrainageSystems": 92,
+        "CoastalVulnerability": 88,
+        "Landslides": 5,
+        "Watersheds": 85,
+        "DeterioratingInfrastructure": 35,
+        "PopulationScore": 88,
+        "WetlandLoss": 45,
+        "InadequatePlanning": 25,
+        "PoliticalFactors": 25
+      },
+      "baseline_vulnerability_score": 65,
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 104,
+        "schools": 327,
+        "road_km": 2486,
+        "power_assets": 69,
+        "critical_facilities": 156
+      }
+    },
+    {
+      "city": "Prague",
+      "country": "Czech Republic",
+      "latitude": 50.0755,
+      "longitude": 14.4378,
+      "continent": "Europe",
+      "notable_flood_events": [
+        "2013 Central European floods (25+ deaths, Euro 12B damages)",
+        "2002 Vltava flood (17 deaths)",
+        "Medieval records document recurring Vltava inundations"
+      ],
+      "region_notes": "Prague lies along the Vltava river. The 2002 floods inundated the metro system and historic Old Town. Climate change is intensifying extreme rainfall and snowmelt events.",
+      "ml_features": {
+        "MonsoonIntensity": 20,
+        "TopographyDrainage": 72,
+        "RiverManagement": 75,
+        "Deforestation": 30,
+        "Urbanization": 85,
+        "ClimateChange": 68,
+        "DamsQuality": 78,
+        "Siltation": 60,
+        "AgriculturalPractices": 40,
+        "Encroachments": 65,
+        "IneffectiveDisasterPreparedness": 42,
+        "DrainageSystems": 75,
+        "CoastalVulnerability": 5,
+        "Landslides": 25,
+        "Watersheds": 72,
+        "DeterioratingInfrastructure": 50,
+        "PopulationScore": 82,
+        "WetlandLoss": 52,
+        "InadequatePlanning": 42,
+        "PoliticalFactors": 30
+      },
+      "baseline_vulnerability_score": 60,
+      "risk_category": "MODERATE",
+      "infrastructure": {
+        "hospitals": 85,
+        "schools": 276,
+        "road_km": 1954,
+        "power_assets": 58,
+        "critical_facilities": 129
+      }
     }
   ],
   "live_api_integration": {
     "description": "Configuration for combining static regional profiles with live weather data",
-    "recommended_api": "Open-Meteo (https://open-meteo.com) — free, open-source, no API key required",
+    "recommended_api": "Open-Meteo (https://open-meteo.com) â€” free, open-source, no API key required",
     "example_endpoint": "https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=precipitation_sum,rain_sum&forecast_days=7",
     "integration_pattern": {
       "step_1": "Load static region profile from this file",

@@ -105,7 +105,7 @@ class MockDataGenerator:
     
     @staticmethod
     def generate_population_exposure(zone_id: str, zone_severity: str) -> Dict[str, Any]:
-        """Generate population exposure metrics for a zone"""
+        """Generate deterministic population exposure metrics for a zone"""
         
         # Severity-based multiplier for affected population
         severity_multiplier = {
@@ -115,19 +115,20 @@ class MockDataGenerator:
             "CRITICAL": 0.95
         }[zone_severity]
         
-        total_pop = random.randint(50000, 500000)
+        zone_factor = 1 + (sum(ord(ch) for ch in zone_id) % 100) / 100
+        total_pop = int((65000 + len(zone_id) * 11000) * zone_factor)
         affected = int(total_pop * severity_multiplier)
         
         return {
             "total_population": total_pop,
             "affected_population": affected,
-            "high_risk_population": int(affected * random.uniform(0.2, 0.5)),
-            "evacuation_difficulty_index": random.uniform(0.3, 0.95)
+            "high_risk_population": int(affected * (0.22 + severity_multiplier * 0.28)),
+            "evacuation_difficulty_index": round(min(0.95, 0.28 + severity_multiplier * 0.64), 2)
         }
     
     @staticmethod
-    def generate_infrastructure_exposure(zone_severity: str) -> Dict[str, Any]:
-        """Generate critical infrastructure exposure"""
+    def generate_infrastructure_exposure(zone_severity: str, zone_id: str = "") -> Dict[str, Any]:
+        """Generate deterministic critical infrastructure exposure"""
         
         severity_multiplier = {
             "LOW": 0.1,
@@ -136,22 +137,26 @@ class MockDataGenerator:
             "CRITICAL": 0.9
         }[zone_severity]
         
-        hospitals = max(0, int(random.randint(2, 20) * severity_multiplier))
-        schools = max(0, int(random.randint(5, 50) * severity_multiplier))
+        zone_factor = 1 + (sum(ord(ch) for ch in zone_id) % 60) / 100
+        hospitals_inventory = max(1, int((3 + len(zone_id)) * zone_factor))
+        schools_inventory = max(2, int((8 + len(zone_id) * 2) * zone_factor))
+        power_inventory = max(1, int((1 + len(zone_id) / 4) * zone_factor))
+        road_inventory = max(8, (18 + len(zone_id) * 3) * zone_factor)
+        bridge_inventory = max(1, int((1 + len(zone_id) / 3) * zone_factor))
         
         return {
-            "hospitals_affected": hospitals,
-            "schools_affected": schools,
-            "power_stations_affected": max(0, int(random.randint(0, 5) * severity_multiplier)),
-            "roads_inaccessible_km": round(random.uniform(5, 200) * severity_multiplier, 1),
-            "bridges_affected": max(0, int(random.randint(0, 10) * severity_multiplier))
+            "hospitals_affected": int(hospitals_inventory * severity_multiplier),
+            "schools_affected": int(schools_inventory * severity_multiplier),
+            "power_stations_affected": int(power_inventory * severity_multiplier),
+            "roads_inaccessible_km": round(road_inventory * severity_multiplier, 1),
+            "bridges_affected": int(bridge_inventory * severity_multiplier)
         }
     
     @staticmethod
     def generate_emergency_impact(zone_id: str, zone_severity: str) -> Dict[str, Any]:
         """Generate emergency impact metrics"""
         pop_exp = MockDataGenerator.generate_population_exposure(zone_id, zone_severity)
-        infra_exp = MockDataGenerator.generate_infrastructure_exposure(zone_severity)
+        infra_exp = MockDataGenerator.generate_infrastructure_exposure(zone_severity, zone_id)
         
         critical_facilities = (
             infra_exp["hospitals_affected"] +

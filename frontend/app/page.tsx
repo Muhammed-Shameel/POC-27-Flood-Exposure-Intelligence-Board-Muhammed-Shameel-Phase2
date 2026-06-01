@@ -32,13 +32,16 @@ type RegionData = RawRegionPoint & {
   region_notes?: string
   notable_flood_events?: string[]
   ml_features?: Record<string, number>
+  infrastructure?: InfrastructureInventory
+  infrastructure_source?: Record<string, any>
   infrastructure_intelligence?: Record<string, number>
+  exposed_population?: number
   continent?: string
   state?: string
   geojson?: Record<string, any>
 }
 
-type RightPanelTab = 'ai' | 'alerts' | 'zones' | 'reports' | 'timeline'
+type RightPanelTab = 'ai' | 'alerts' | 'zones' | 'reports' | 'timeline' | 'response'
 type DataMode = 'live' | 'historical'
 
 const ALL_CITIES = 'all'
@@ -53,6 +56,7 @@ const RIGHT_PANEL_TABS: { id: RightPanelTab; label: string }[] = [
   { id: 'zones',    label: 'Zones'    },
   { id: 'reports',  label: 'Reports'  },
   { id: 'timeline', label: 'Timeline' },
+  { id: 'response', label: 'Response' },
 ]
 
 let regionCacheByMode: Partial<Record<DataMode, RegionData[]>> = {}
@@ -130,7 +134,10 @@ export default function CommandCenter() {
   // ── Keyboard: Escape closes analytics overlay ─────────────────────────────
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setAnalyticsOpen(false)
+      if (e.key === 'Escape') {
+        setAnalyticsOpen(false)
+        setPanelOpen(false)
+      }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
@@ -229,6 +236,16 @@ export default function CommandCenter() {
   const activeRainfall   = selectedRegion ? Number(selectedRegion.rainfall_mm ?? 0)       : avgRainfall
   const activeWaterLevel = selectedRegion ? Number(selectedRegion.water_level_index ?? 0) : avgWaterLevel
   const selectedRegionLabel = selectedRegion?.city ?? ALL_CITIES_LABEL
+  const visibleRegionData = useMemo(
+    () => selectedCity === ALL_CITIES
+      ? regionData
+      : regionData.filter(r => r.city === selectedCity),
+    [regionData, selectedCity]
+  )
+  const exposedPopulation = useMemo(
+    () => estimateExposedPopulation(selectedRegion, regionData),
+    [selectedRegion, regionData]
+  )
 
   const handleSelectRegion = useCallback((region: RegionData, updateFilter = true) => {
     setSelectedRegion(region)
@@ -284,9 +301,13 @@ export default function CommandCenter() {
 
   // ── Tab click: only switches content, never closes panel ─────────────────
   const handleTabClick = useCallback((tab: RightPanelTab) => {
+    if (panelOpen && activeTab === tab) {
+      setPanelOpen(false)
+      return
+    }
     setActiveTab(tab)
     setPanelOpen(true)
-  }, [])
+  }, [activeTab, panelOpen])
 
   return (
     // Root: just a viewport anchor — no flex, no layout flow
@@ -336,10 +357,10 @@ export default function CommandCenter() {
       />
 
       {/* ══════════════════════════════════════════════════════════════════════
-          LAYER 2 — TOP NAVBAR  z-30
+          LAYER 2 — TOP NAVBAR  z-700
       ══════════════════════════════════════════════════════════════════════ */}
-      <header
-        className="fixed inset-x-0 top-0 z-[30] h-[64px] flex items-center px-5 gap-4 border-b border-emerald-500/20"
+      <nav
+        className="fixed inset-x-0 top-0 z-[700] h-[64px] flex items-center px-5 gap-1.5 border-b border-emerald-500/20"
         style={{
           background: 'linear-gradient(180deg,rgba(2,6,23,0.97) 0%,rgba(2,6,23,0.88) 100%)',
           backdropFilter: 'blur(16px)',
@@ -353,9 +374,9 @@ export default function CommandCenter() {
               whitespace-nowrap
               text-emerald-400
               font-bold
-              text-xl
+              text-3xl
               uppercase
-              tracking-[0.18em]
+              tracking-[0.04em]
               font-['Orbitron']
             "
           >
@@ -364,12 +385,12 @@ export default function CommandCenter() {
 
           <span
             className="
-              text-[10px]
+              text-[11px]
               uppercase
-              tracking-[0.28em]
-              text-cyan-400/70
-              mt-1
-              font-medium
+              tracking-[0.08em]
+              text-cyan-400/60
+              mt-0.5
+              font-semibold
             "
           >
             Real-Time Flood Monitoring System
@@ -377,41 +398,47 @@ export default function CommandCenter() {
         </div>
 
         {/* KPI Pills */}
-        <div className="flex gap-2 flex-1 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-          <KPI label="Avg Risk"  value={loading ? '--' : `${avgRisk}`}                             accent="emerald" />
+        <div className="flex flex-nowrap shrink-0 gap-3" style={{ scrollbarWidth: 'none' }}>
           <KPI label="Regions"   value={loading ? '--' : `${regionData.length}`}                   accent="cyan"    />
           <KPI label="Critical"  value={loading ? '--' : `${criticalCount}`}                       accent="red"     />
-          <KPI label="Rainfall"  value={loading ? '--' : formatMetric(activeRainfall, 'mm', 1)}    accent="blue"    />
-          <KPI label="Water"     value={loading ? '--' : formatDisplayNumber(activeWaterLevel, 0)} accent="cyan"    />
+          <KPI label="Exposed Pop" value={loading ? '--' : formatDisplayNumber(exposedPopulation, 0)} accent="emerald" />
           <KPI label="Selected"  value={selectedRegionLabel}                                       accent="violet"  />
         </div>
 
         {/* Analytics Button */}
         <motion.button
-          onClick={() => setAnalyticsOpen(true)}
+          onClick={() => setAnalyticsOpen(value => !value)}
           whileHover={{ scale: 1.03, y: -1 }}
           whileTap={{ scale: 0.97 }}
           className="
-            shrink-0 px-4 py-2 rounded-lg
+            shrink-0 h-9 px-3 rounded-lg
             border border-violet-500/30 bg-violet-500/10
             hover:bg-violet-500/20 hover:border-violet-400/50
             text-violet-300 hover:text-violet-200
-            text-xs uppercase tracking-wider font-semibold
+            text-[9px] uppercase tracking-widest font-bold
             transition-all duration-200
             hover:shadow-[0_0_20px_rgba(168,85,247,0.20)]
           "
         >
-          Analytics
+          Analysis
         </motion.button>
 
+        <DatasetExportControls
+          currentDataset={visibleRegionData}
+          selectedRegion={selectedRegion}
+          regionData={regionData}
+          dataMode={dataMode}
+          compact
+        />
+
         {/* Data Mode Toggle */}
-        <div className="shrink-0 flex items-center rounded-lg border border-emerald-500/20 bg-[#06111d] p-0.5">
+        <div className="shrink-0 flex items-center h-9 rounded-lg border border-emerald-500/20 bg-[#06111d] p-0.5">
           {(['live', 'historical'] as DataMode[]).map(mode => (
             <button
               key={mode}
               onClick={() => setDataMode(mode)}
               className={`
-                px-3 py-1.5 text-xs uppercase tracking-[0.1em] font-semibold rounded-md transition-all duration-200
+                px-2.5 h-full flex items-center text-[9px] uppercase tracking-[0.1em] font-bold rounded-md transition-all duration-200
                 ${dataMode === mode
                   ? mode === 'live'
                     ? 'bg-emerald-500/20 text-emerald-300 shadow-[0_0_14px_rgba(16,185,129,0.16)]'
@@ -421,7 +448,7 @@ export default function CommandCenter() {
               `}
             >
               {mode === 'live' && (
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5 align-middle" />
+                <span className="inline-block w-1 h-1 rounded-full bg-emerald-400 animate-pulse mr-1" />
               )}
               {mode}
             </button>
@@ -444,8 +471,8 @@ export default function CommandCenter() {
             if (found) handleSelectRegion(found)
           }}
           className="
-            shrink-0 bg-[#07111f] border border-emerald-500/20 text-gray-300
-            text-xs px-3 py-2 rounded-lg outline-none
+            shrink-0 h-9 bg-[#07111f] border border-emerald-500/20 text-gray-300
+            text-[12px] px-3 rounded-lg outline-none
             hover:border-emerald-400/40 focus:border-emerald-400 transition-all
           "
         >
@@ -455,21 +482,23 @@ export default function CommandCenter() {
           ))}
         </select>
 
-        {/* Status */}
-        {apiError && (
-          <div className="shrink-0 flex items-center gap-1.5 px-2 py-1 rounded-md bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs">
-            <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-            CACHED
+        {/* Status & Time */}
+        <div className="ml-auto flex items-center gap-3">
+          {apiError && (
+            <div className="shrink-0 h-9 flex items-center gap-1.5 px-2.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-amber-400 text-[9px] font-bold tracking-widest uppercase">
+              <div className="w-1 h-1 rounded-full bg-amber-400 animate-pulse" />
+              CACHED
+            </div>
+          )}
+          <div className="shrink-0 h-9 flex items-center gap-2.5 px-3 rounded-lg bg-emerald-500/5 border border-emerald-500/15">
+            <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-gray-400 text-[10px] font-bold tabular-nums tracking-widest">{time}</span>
           </div>
-        )}
-        <div className="shrink-0 flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-gray-400 text-xs tabular-nums tracking-widest min-w-[80px]">{time}</span>
         </div>
-      </header>
+      </nav>
 
       {/* ══════════════════════════════════════════════════════════════════════
-          LAYER 3 — SIDE PANEL OVERLAY  z-60
+          LAYER 3 — SIDE PANEL OVERLAY  z-600
           Fixed to right edge, floats above the permanent map background.
       ══════════════════════════════════════════════════════════════════════ */}
       <AnimatePresence initial={false}>
@@ -480,11 +509,12 @@ export default function CommandCenter() {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0 }}
             transition={{ type: 'spring', stiffness: 340, damping: 36 }}
-            className="fixed right-0 z-[60] flex flex-col overflow-hidden"
+            className="fixed right-0 z-[600] flex max-w-full flex-col overflow-hidden"
             style={{
               top: 64,            // below navbar
               bottom: 0,
-              width: 360,
+              width: 'min(460px, 100vw)',
+              maxHeight: 'calc(100vh - 64px)',
               background: 'linear-gradient(180deg,rgba(3,13,26,0.97) 0%,rgba(2,10,20,0.97) 100%)',
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
@@ -494,42 +524,45 @@ export default function CommandCenter() {
           >
             {/* Panel Header */}
             <div
-              className="shrink-0 border-b border-emerald-500/10"
+              className="sticky top-0 z-20 shrink-0 border-b border-emerald-500/10"
               style={{ background: 'rgba(3,13,26,0.60)' }}
             >
               {/* Tab row + close — single h-11 row */}
-              <div className="flex items-center h-11 px-2 gap-0.5">
-                {RIGHT_PANEL_TABS.map(tab => (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleTabClick(tab.id)}
-                    className={`
-                      relative h-8 px-3 text-[11px] font-semibold uppercase tracking-wider
-                      rounded-md transition-all duration-200 whitespace-nowrap
-                      ${activeTab === tab.id
-                        ? 'text-emerald-300 bg-emerald-500/12 shadow-[0_0_12px_rgba(16,185,129,0.15)]'
-                        : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
-                      }
-                    `}
-                  >
-                    {tab.label}
-                    {activeTab === tab.id && (
-                      <motion.div
-                        layoutId="active-tab-indicator"
-                        className="absolute bottom-0 left-2 right-2 h-px bg-emerald-400/70 rounded-full"
-                      />
-                    )}
-                  </button>
-                ))}
-                <div className="flex-1" />
+              <div className="flex h-12 items-center gap-1 px-2">
+                <div className="flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto pr-1" style={{ scrollbarWidth: 'none' }}>
+                  {RIGHT_PANEL_TABS.map(tab => (
+                    <button
+                      key={tab.id}
+                      onClick={() => handleTabClick(tab.id)}
+                      className={`
+                        relative h-8 shrink-0 px-2.5 text-[10px] font-semibold uppercase tracking-wider
+                        rounded-md transition-all duration-200 whitespace-nowrap
+                        ${activeTab === tab.id
+                          ? 'text-emerald-300 bg-emerald-500/12 shadow-[0_0_12px_rgba(16,185,129,0.15)]'
+                          : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
+                        }
+                      `}
+                    >
+                      {tab.label}
+                      {activeTab === tab.id && (
+                        <motion.div
+                          layoutId="active-tab-indicator"
+                          className="absolute bottom-0 left-2 right-2 h-px bg-emerald-400/70 rounded-full"
+                        />
+                      )}
+                    </button>
+                  ))}
+                </div>
                 {/* Close */}
                 <button
                   onClick={() => setPanelOpen(false)}
                   className="
-                    w-8 h-8 flex items-center justify-center rounded-lg shrink-0
-                    text-gray-500 hover:text-red-400
-                    border border-transparent hover:border-red-500/30
-                    hover:bg-red-500/10 transition-all duration-200
+                    sticky right-0 z-30 w-8 h-8 flex items-center justify-center rounded-lg shrink-0
+                    text-red-300 hover:text-red-100
+                    border border-red-400/35 hover:border-red-300/60
+                    bg-red-500/10 hover:bg-red-500/20
+                    shadow-[0_0_16px_rgba(248,113,113,0.10)]
+                    transition-all duration-200
                   "
                   aria-label="Close panel"
                 >
@@ -584,7 +617,7 @@ export default function CommandCenter() {
       </AnimatePresence>
 
       {/* ══════════════════════════════════════════════════════════════════════
-          LAYER 4 — FLOATING PANEL OPENER  z-90
+          LAYER 4 — FLOATING PANEL OPENER  z-600
           Anchored to panel edge — feels attached to the UI system.
           Visible only when panel is closed.
       ══════════════════════════════════════════════════════════════════════ */}
@@ -599,7 +632,7 @@ export default function CommandCenter() {
             onClick={() => setPanelOpen(true)}
             aria-label="Open intelligence panel"
             className="
-              fixed right-0 z-[90]
+              fixed right-0 z-[600]
               flex items-center justify-center
               w-9 h-16 rounded-l-xl
               border border-r-0 border-emerald-500/28
@@ -624,7 +657,7 @@ export default function CommandCenter() {
       </AnimatePresence>
 
       {/* ══════════════════════════════════════════════════════════════════════
-          LAYER 5 — ANALYTICS WORKSPACE  z-110 backdrop / z-120 window
+          LAYER 5 — ANALYTICS WORKSPACE  z-800 backdrop / z-900 window
           Fully independent of map and panel. Centered modal workspace.
       ══════════════════════════════════════════════════════════════════════ */}
       <AnimatePresence>
@@ -637,11 +670,11 @@ export default function CommandCenter() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
-              className="fixed inset-0 z-[110]"
+              className="fixed inset-0 z-[800]"
               style={{
-                backgroundColor: 'rgba(1, 4, 14, 0.80)',
-                backdropFilter: 'blur(14px)',
-                WebkitBackdropFilter: 'blur(14px)',
+                backgroundColor: 'rgba(1, 4, 14, 0.46)',
+                backdropFilter: 'blur(6px)',
+                WebkitBackdropFilter: 'blur(6px)',
               }}
               onClick={() => setAnalyticsOpen(false)}
             />
@@ -653,13 +686,13 @@ export default function CommandCenter() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 18 }}
               transition={{ type: 'spring', stiffness: 310, damping: 30 }}
-              className="fixed inset-0 z-[120] flex items-center justify-center pointer-events-none"
+              className="fixed inset-0 z-[900] flex items-center justify-center pointer-events-none"
             >
               <div
                 className="pointer-events-auto flex flex-col rounded-2xl overflow-hidden border border-emerald-500/18"
                 style={{
-                  width: 'min(92vw, 1560px)',
-                  height: 'min(90vh, 1040px)',
+                  width: 'min(85vw, 1480px)',
+                  height: 'min(88vh, 1040px)',
                   background: 'linear-gradient(160deg,rgba(2,10,24,0.99) 0%,rgba(2,8,18,0.99) 100%)',
                   backdropFilter: 'blur(32px)',
                   WebkitBackdropFilter: 'blur(32px)',
@@ -708,9 +741,10 @@ export default function CommandCenter() {
                     title="Close (Esc)"
                     className="
                       w-9 h-9 flex items-center justify-center rounded-xl
-                      border border-white/8 hover:border-red-500/40
-                      text-gray-500 hover:text-red-400
-                      bg-white/3 hover:bg-red-500/10
+                      border border-red-400/35 hover:border-red-300/60
+                      text-red-300 hover:text-red-100
+                      bg-red-500/10 hover:bg-red-500/20
+                      shadow-[0_0_18px_rgba(248,113,113,0.12)]
                       transition-all duration-200
                     "
                   >
@@ -730,6 +764,7 @@ export default function CommandCenter() {
                     selectedRegion={selectedRegion ?? buildGlobalRegion(regionData)}
                     dataMode={dataMode}
                     onSelectRegion={handleSelectRegion}
+                    visibleRegionData={visibleRegionData}
                   />
                 </div>
               </div>
@@ -803,6 +838,11 @@ function RightPanelContent({
             <InfraMetric label="Drainage"     value={infra.drainageStress}         accent="blue"    />
             <InfraMetric label="Watershed"    value={infra.watershedDegradation}   accent="amber"   />
           </div>
+          <div className="grid grid-cols-2 gap-2">
+            <MiniMetric label="Exposed Population" value={formatDisplayNumber(estimateExposedPopulation(focusRegion, regionData), 0)} tone="emerald" />
+            <MiniMetric label="Readiness" value={formatDisplayNumber(responseReadinessScore(focusRegion, regionData), 0)} tone="cyan" />
+          </div>
+          <InfrastructureImpactMini impact={estimateInfrastructureImpact(focusRegion, regionData)} />
           <div className="space-y-2">
             {insights.map((insight, i) => (
               <motion.div
@@ -830,6 +870,49 @@ function RightPanelContent({
     }
 
     // ── ALERTS TAB ──────────────────────────────────────────────────────────
+    case 'response': {
+      const score = Number(focusRegion?.risk_score ?? average(regionData.map(r => Number(r.risk_score ?? 0))))
+      const severity = severityFromScore(score)
+      const checklist = buildResponseChecklist(score)
+      const impact = estimateInfrastructureImpact(focusRegion, regionData)
+
+      return (
+        <>
+          <SectionTitle label="Response Checklist" color="text-emerald-400" />
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="text-xs font-semibold text-gray-100">{focusRegion?.city ?? ALL_CITIES_LABEL}</div>
+                <div className="mt-0.5 text-[10px] uppercase tracking-widest text-gray-600">{severity.label} operating posture</div>
+              </div>
+              <div className="text-xl font-bold tabular-nums text-emerald-300">{formatDisplayNumber(score, 0)}</div>
+            </div>
+          </div>
+          <div className="space-y-2">
+            {checklist.map((item, index) => (
+              <motion.div
+                key={item.category}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.04 }}
+                className="rounded-xl border border-white/8 bg-white/3 p-3"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-semibold text-gray-200">{item.category}</span>
+                  <span className={`rounded px-1.5 py-0.5 text-[9px] uppercase tracking-wider ${item.active ? 'bg-emerald-500/15 text-emerald-300' : 'bg-white/5 text-gray-500'}`}>
+                    {item.active ? 'active' : 'standby'}
+                  </span>
+                </div>
+                <div className="mt-1.5 text-xs leading-relaxed text-gray-500">{item.action}</div>
+              </motion.div>
+            ))}
+          </div>
+          <SectionTitle label="Infrastructure Impact" color="text-cyan-400" />
+          <InfrastructureImpactMini impact={impact} />
+        </>
+      )
+    }
+
     case 'alerts': {
       const critical = regionData.filter(r => (r.risk_score ?? 0) > 70)
       const high     = regionData.filter(r => (r.risk_score ?? 0) > 45 && (r.risk_score ?? 0) <= 70)
@@ -1112,11 +1195,13 @@ function AnalyticsCommandPanel({
   selectedRegion,
   dataMode,
   onSelectRegion,
+  visibleRegionData,
 }: {
   regionData: RegionData[]
   selectedRegion: RegionData | null
   dataMode: DataMode
   onSelectRegion: (region: RegionData) => void
+  visibleRegionData: RegionData[]
 }) {
   const selected       = selectedRegion ?? regionData[0] ?? null
   const risks          = regionData.map(r => Number(r.risk_score ?? 0))
@@ -1137,10 +1222,13 @@ function AnalyticsCommandPanel({
   const mlConfidence   = Math.round(clamp(74 + inferenceShare * 18 - standardDeviation(risks) * 0.6, 58, 96))
   const alertStatus    = criticalCount > 0 ? 'CRITICAL' : highRiskCount > 0 ? 'WATCH' : 'STABLE'
   const infra          = infrastructureProfile(selected, regionData)
+  const exposedPop     = estimateExposedPopulation(selected, regionData)
+  const infrastructure = estimateInfrastructureImpact(selected, regionData)
+  const readiness      = responseReadinessScore(selected, regionData)
 
   return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7 gap-4">
         <IntelligenceKpiCard label="Active Flood Risk"      value={selected ? formatDisplayNumber(selected.risk_score, 1) : '--'}  detail={selected?.risk_status ?? '--'}                                            accent="red"     trend={selected ? Number(selected.risk_score ?? 0) - avgRisk : 0}            series={risks.slice(0, 12)} />
         <IntelligenceKpiCard label="Regions Monitored"      value={regionData.length || '--'}                                       detail={`${highRiskCount} high-watch`}                                            accent="cyan"    trend={highRiskCount}                                                        series={risks} />
         <IntelligenceKpiCard label="Rainfall Intensity"     value={formatMetric(selected?.rainfall_mm ?? avgRain, 'mm', 1)}         detail={`${formatMetric(avgRain, 'mm', 1)} network avg`}                          accent="blue"    trend={Number(selected?.rainfall_mm ?? avgRain) - avgRain}                    series={rain} />
@@ -1149,14 +1237,21 @@ function AnalyticsCommandPanel({
         <IntelligenceKpiCard label="Historical Event Index" value={eventIndex}                                                      detail="frequency weighted"                                                       accent="violet"  trend={eventIndex - avgRisk}                                                 series={regionData.map(r => Number(r.risk_score ?? 0) * 0.62 + Number(r.water_level_index ?? 0) * 0.38)} />
         <IntelligenceKpiCard label="Environmental Stress"   value={environmentalStress}                                             detail={`water ${formatDisplayNumber(avgWater, 0)} / humidity ${formatMetric(avgHumidity, '%', 0)}`} accent="cyan" trend={environmentalStress - 55}                           series={water} />
         <IntelligenceKpiCard label="Live Alert Status"      value={alertStatus}                                                     detail={criticalCount ? 'deploy watch desk' : highRiskCount ? 'monitor escalation' : 'routine scan'} accent={criticalCount ? 'red' : highRiskCount ? 'amber' : 'emerald'} trend={criticalCount + highRiskCount} series={risks.slice().sort((a, b) => b - a)} />
+        <IntelligenceKpiCard label="Exposed Population"     value={formatDisplayNumber(exposedPop, 0)}                              detail={`${selected?.city ?? ALL_CITIES_LABEL} estimate`}                      accent="emerald" trend={exposedPop - average(regionData.map(r => estimateExposedPopulation(r, regionData)))} series={regionData.map(r => estimateExposedPopulation(r, regionData) / 10000)} />
+        <IntelligenceKpiCard label="Response Readiness"     value={formatDisplayNumber(readiness, 0)}                               detail={readiness > 70 ? 'ready posture' : readiness > 45 ? 'partial posture' : 'surge required'} accent={readiness > 70 ? 'emerald' : readiness > 45 ? 'amber' : 'red'} trend={readiness - 60} series={regionData.map(r => responseReadinessScore(r, regionData))} />
         <IntelligenceKpiCard label="Runoff Pressure"        value={formatDisplayNumber(infra.runoffPressure, 0)}                    detail={`${formatDisplayNumber(pctDelta(infra.runoffPressure, infra.network.runoffPressure), 0)}% vs network`}        accent="cyan"    trend={infra.runoffPressure - infra.network.runoffPressure}            series={regionData.map(r => infraValue(r, 'runoff_pressure', 50))} />
         <IntelligenceKpiCard label="Drainage Stress"        value={formatDisplayNumber(infra.drainageStress, 0)}                    detail={`${formatDisplayNumber(pctDelta(infra.drainageStress, infra.network.drainageStress), 0)}% vs network`}          accent="blue"    trend={infra.drainageStress - infra.network.drainageStress}              series={regionData.map(r => infraValue(r, 'drainage_stress', 50))} />
         <IntelligenceKpiCard label="Watershed Stability"    value={formatDisplayNumber(100 - infra.watershedDegradation, 0)}        detail={`${formatDisplayNumber(infra.watershedDegradation, 0)} degradation`}                                             accent="emerald" trend={infra.network.watershedDegradation - infra.watershedDegradation} series={regionData.map(r => 100 - infraValue(r, 'watershed_degradation', 50))} />
         <IntelligenceKpiCard label="Resilience Rank"        value={formatDisplayNumber(infra.resilienceScore, 0)}                   detail={`${formatDisplayNumber(pctDelta(infra.resilienceScore, infra.network.resilienceScore), 0)}% vs network`}          accent="violet"  trend={infra.resilienceScore - infra.network.resilienceScore}            series={regionData.map(r => infraValue(r, 'resilience_score', 50))} />
       </div>
 
+      <InfrastructureImpactStrip impact={infrastructure} />
+
       <div className="grid grid-cols-1 2xl:grid-cols-2 gap-4">
         <FloodForecastGraph        selectedRegion={selected} regionData={regionData} dataMode={dataMode} />
+        <ExposedPopulationTrendGraph regionData={visibleRegionData.length ? visibleRegionData : regionData} selectedRegion={selected} />
+        <AssetExposureSummaryGraph regionData={visibleRegionData.length ? visibleRegionData : regionData} selectedRegion={selected} />
+        <ResponseReadinessGraph regionData={regionData} selectedRegion={selected} />
         <RegionalComparisonGraph   regionData={regionData} onSelectRegion={onSelectRegion} />
         <InfrastructureStressGraph regionData={regionData} selectedRegion={selected} />
         <VulnerabilityDistributionGraph regionData={regionData} dataMode={dataMode} />
@@ -1187,10 +1282,10 @@ function KPI({ label, value, accent }: {
     <motion.div
       whileHover={{ scale: 1.025, y: -1 }}
       transition={{ duration: 0.16, ease: 'easeOut' }}
-      className={`px-3 py-1.5 border rounded-lg ${colors[accent]} transition-all duration-200 hover:border-emerald-300/35 hover:shadow-[0_0_18px_rgba(34,211,238,0.10)]`}
+      className={`w-[110px] h-9 px-2.5 flex flex-col justify-center border rounded-lg ${colors[accent]} transition-all duration-200 hover:border-emerald-300/35 hover:shadow-[0_0_18px_rgba(34,211,238,0.10)]`}
     >
-      <div className="text-[10px] text-gray-500 uppercase tracking-widest leading-none">{label}</div>
-      <div className={`text-sm font-bold tabular-nums mt-0.5 ${colors[accent].split(' ')[0]}`}>
+      <div className="truncate text-[8px] text-gray-500 uppercase tracking-widest leading-none font-medium mb-0.5" title={label}>{label}</div>
+      <div className={`truncate text-[14px] font-bold tabular-nums leading-none ${colors[accent].split(' ')[0]}`} title={String(displayValue)}>
         {displayValue}
       </div>
     </motion.div>
@@ -1278,6 +1373,148 @@ function MapSkeleton() {
 // ANALYTICS CHART COMPONENTS (unchanged from original)
 // ══════════════════════════════════════════════════════════════════════════════
 
+function MiniMetric({ label, value, tone }: { label: string; value: string | number; tone: 'emerald' | 'cyan' }) {
+  const colors = tone === 'emerald'
+    ? 'border-emerald-500/20 bg-emerald-500/5 text-emerald-300'
+    : 'border-cyan-500/20 bg-cyan-500/5 text-cyan-300'
+  return (
+    <div className={`rounded-lg border p-2 ${colors}`}>
+      <div className="text-[10px] uppercase tracking-widest text-gray-500">{label}</div>
+      <div className="mt-1 text-sm font-bold tabular-nums">{value}</div>
+    </div>
+  )
+}
+
+function InfrastructureImpactMini({ impact }: { impact: InfrastructureImpactEstimate }) {
+  const items = [
+    ['Roads', formatMetric(impact.roadsKm, 'km', 1), '#94a3b8'],
+    ['Hospitals', impact.hospitals, '#f87171'],
+    ['Schools', impact.schools, '#f59e0b'],
+    ['Power', impact.power, '#a78bfa'],
+    ['Critical', impact.criticalFacilities, '#22d3ee'],
+  ] as const
+  return (
+    <div className="rounded-xl border border-cyan-500/15 bg-cyan-500/5 p-3">
+      <div className="mb-2 text-[10px] uppercase tracking-widest text-gray-500">Affected Infrastructure</div>
+      <div className="grid grid-cols-2 gap-2">
+        {items.map(([label, value, color]) => (
+          <div key={label} className="flex items-center justify-between gap-2 rounded-lg bg-white/5 px-2 py-1.5">
+            <span className="flex items-center gap-1.5 text-[10px] text-gray-500">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: color }} />
+              {label}
+            </span>
+            <span className="text-xs font-bold tabular-nums text-gray-200">{value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function InfrastructureImpactStrip({ impact }: { impact: InfrastructureImpactEstimate }) {
+  const items = [
+    ['Roads (est. affected)', formatMetric(impact.roadsKm, 'km', 1), 'cyan'],
+    ['Hospitals (est. affected)', impact.hospitals, 'red'],
+    ['Schools (est. affected)', impact.schools, 'amber'],
+    ['Power assets (est. risk)', impact.power, 'violet'],
+    ['Critical facilities (est. risk)', impact.criticalFacilities, 'emerald'],
+  ] as const
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between px-1">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Infrastructure Impact Estimates</h3>
+        <span className="text-[9px] text-gray-600 uppercase tracking-widest">Source: OpenStreetMap Inventory</span>
+      </div>
+      <div className="grid grid-cols-2 gap-3 xl:grid-cols-5">
+        {items.map(([label, value, accent]) => {
+          const colors = commandColors(accent)
+          return (
+            <div key={label} className={`rounded-lg border ${colors.border} ${colors.bg} p-3 transition-all hover:border-white/10`}>
+              <div className="text-[10px] uppercase tracking-widest text-gray-500">{label}</div>
+              <div className={`mt-1 text-xl font-bold tabular-nums ${colors.text}`}>{value}</div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function DatasetExportControls({
+  currentDataset,
+  selectedRegion,
+  regionData,
+  dataMode,
+  compact = false,
+}: {
+  currentDataset: RegionData[]
+  selectedRegion: RegionData | null
+  regionData: RegionData[]
+  dataMode: DataMode
+  compact?: boolean
+}) {
+  const [scope, setScope] = useState<'selected' | 'cache'>('cache')
+  const [menuOpen, setMenuOpen] = useState(false)
+  
+  const download = (target: 'selected' | 'cache') => {
+    setScope(target)
+    setMenuOpen(false)
+    
+    const liveCache = readLatestLiveCache()
+    const cachedRows = liveCache ?? regionCacheByMode[dataMode] ?? regionData
+    const selectedRows = selectedRegion
+      ? cachedRows.filter(row => row.city === selectedRegion.city)
+      : currentDataset
+    const datasets: Record<typeof target, RegionData[]> = {
+      selected: selectedRows,
+      cache: cachedRows,
+    }
+    const rows = datasets[target] ?? []
+    if (!rows.length) return
+    const exportMode = dataMode
+    downloadCsv(`flood-dataset-${target}-${new Date().toISOString().slice(0, 10)}.csv`, buildTelemetryCsv(rows, exportMode))
+  }
+
+  return (
+    <div className={`shrink-0 relative ${compact ? 'max-lg:hidden' : ''}`}>
+      <button
+        type="button"
+        onClick={() => setMenuOpen(!menuOpen)}
+        className="h-9 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 text-[10px] font-bold uppercase tracking-wide text-emerald-300 transition-colors hover:border-emerald-400/50 hover:bg-emerald-500/20 hover:shadow-[0_0_20px_rgba(16,185,129,0.16)] inline-flex items-center gap-1.5"
+      >
+        EXPORT
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className={`transition-transform ${menuOpen ? 'rotate-180' : ''}`}>
+          <path d="M1 3.5L5 7L9 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      
+      {menuOpen && (
+        <div className="absolute top-full mt-1.5 right-0 z-40 rounded-lg border border-emerald-500/25 bg-[#030d1a] overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.60)]" style={{minWidth: '220px'}}>
+          <button
+            type="button"
+            onClick={() => download('cache')}
+            className="w-full px-4 py-2.5 text-left text-[10px] uppercase tracking-wider font-semibold text-emerald-300 hover:bg-emerald-500/15 transition-colors border-b border-emerald-500/10"
+          >
+            Export Current Cache
+          </button>
+          <button
+            type="button"
+            onClick={() => download('selected')}
+            disabled={!selectedRegion}
+            className={`w-full px-4 py-2.5 text-left text-[10px] uppercase tracking-wider font-semibold transition-colors ${
+              selectedRegion 
+                ? 'text-emerald-300 hover:bg-emerald-500/15' 
+                : 'text-gray-600 cursor-not-allowed'
+            }`}
+          >
+            {selectedRegion ? `Export Selected City Cache (${selectedRegion.city})` : 'Export Selected City Cache (none)'}
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function IntelligenceKpiCard({ label, value, detail, accent, trend, series }: {
   label: string; value: string | number; detail: string
   accent: 'emerald' | 'cyan' | 'red' | 'blue' | 'violet' | 'amber'
@@ -1364,6 +1601,79 @@ function FloodForecastGraph({ selectedRegion, regionData, dataMode }: {
         <motion.rect x="22" y="28" width="2" height="240" fill="#a7f3d0" opacity="0.5" animate={{ x: [22, 620, 22] }} transition={{ repeat: Infinity, duration: 5.5, ease: 'linear' }} />
         <ChartLegend items={[['Live ML', '#22d3ee'], ['Historical', '#8b5cf6'], ['Moving avg', '#f59e0b'], [`Anomalies ${anomalies.length}`, '#ef4444']]} />
       </svg>
+    </ChartShell>
+  )
+}
+
+function ExposedPopulationTrendGraph({ regionData, selectedRegion }: {
+  regionData: RegionData[]; selectedRegion: RegionData | null
+}) {
+  const population = regionData.map(r => estimateExposedPopulation(r, regionData))
+  const maxPop = Math.max(1, ...population)
+  const selectedPop = estimateExposedPopulation(selectedRegion, regionData)
+  const trend = population.map(value => (value / maxPop) * 100)
+  return (
+    <ChartShell title="Exposed Population Trend" subtitle={`${selectedRegion?.city ?? 'Visible dataset'} affected population estimate`} stat={selectedPop} statLabel="people exposed">
+      <svg viewBox="0 0 640 300" className="h-[300px] w-full overflow-visible">
+        <ChartGrid width={640} height={300} />
+        <path d={bandPath(trend, 7, 590, 220, 28, 36)} fill="#22d3ee" opacity="0.12" />
+        <motion.path initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1 }} d={linePath(trend, 590, 220, 28, 36)} fill="none" stroke="#34d399" strokeWidth="3" />
+        {trend.map((value, index) => {
+          const [x, y] = pointFor(value, index, trend.length, 590, 220, 28, 36)
+          return <circle key={`${index}-${value}`} cx={x} cy={y} r="3.5" fill="#67e8f9" opacity="0.86" />
+        })}
+        <ChartLegend items={[['Estimated exposed population', '#34d399'], ['uncertainty band', '#22d3ee']]} />
+      </svg>
+    </ChartShell>
+  )
+}
+
+function AssetExposureSummaryGraph({ regionData, selectedRegion }: {
+  regionData: RegionData[]; selectedRegion: RegionData | null
+}) {
+  const impact = estimateInfrastructureImpact(selectedRegion, regionData)
+  const values = [
+    { label: 'Hospitals', value: impact.hospitals, color: '#f87171' },
+    { label: 'Schools', value: impact.schools, color: '#f59e0b' },
+    { label: 'Road km', value: impact.roadsKm, color: '#94a3b8' },
+    { label: 'Power', value: impact.power, color: '#a78bfa' },
+    { label: 'Critical', value: impact.criticalFacilities, color: '#22d3ee' },
+  ]
+  const maxValue = Math.max(1, ...values.map(item => item.value))
+  return (
+    <ChartShell title="Asset Exposure Summary" subtitle="Infrastructure exposure from region metadata" stat={values.reduce((sum, item) => sum + item.value, 0)} statLabel="asset load">
+      <div className="space-y-3 pt-1">
+        {values.map(item => (
+          <div key={item.label}>
+            <div className="mb-1 flex items-center justify-between text-[10px] uppercase tracking-widest">
+              <span className="text-gray-500">{item.label}</span>
+              <span className="text-gray-300 tabular-nums">{formatDisplayNumber(item.value, 1)}</span>
+            </div>
+            <div className="h-8 overflow-hidden rounded bg-white/[0.035]">
+              <motion.div initial={{ width: 0 }} animate={{ width: `${(item.value / maxValue) * 100}%` }} className="h-full rounded-r" style={{ backgroundColor: item.color, opacity: 0.74 }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </ChartShell>
+  )
+}
+
+function ResponseReadinessGraph({ regionData, selectedRegion }: {
+  regionData: RegionData[]; selectedRegion: RegionData | null
+}) {
+  const readiness = responseReadinessScore(selectedRegion, regionData)
+  const checklist = buildResponseChecklist(Number(selectedRegion?.risk_score ?? average(regionData.map(r => Number(r.risk_score ?? 0)))))
+  return (
+    <ChartShell title="Response Readiness Indicators" subtitle="Operational readiness based on severity and resilience" stat={readiness} statLabel="readiness">
+      <div className="grid grid-cols-1 gap-2 pt-1 sm:grid-cols-5">
+        {checklist.map(item => (
+          <div key={item.category} className={`rounded-lg border p-3 ${item.active ? 'border-emerald-500/20 bg-emerald-500/10' : 'border-white/8 bg-white/3'}`}>
+            <div className={`text-xl font-bold ${item.active ? 'text-emerald-300' : 'text-gray-600'}`}>{item.active ? 'ON' : 'IDLE'}</div>
+            <div className="mt-1 text-[10px] uppercase tracking-widest text-gray-500">{item.category}</div>
+          </div>
+        ))}
+      </div>
     </ChartShell>
   )
 }
@@ -1650,6 +1960,181 @@ function LegendDot({ color, label }: { color: string; label: string }) {
 // UTILITY / MATH HELPERS
 // ══════════════════════════════════════════════════════════════════════════════
 
+type InfrastructureImpactEstimate = {
+  roadsKm: number
+  hospitals: number
+  schools: number
+  power: number
+  criticalFacilities: number
+}
+
+type InfrastructureInventory = {
+  hospitals?: number
+  schools?: number
+  road_km?: number
+  power_assets?: number
+  critical_facilities?: number
+}
+
+function severityFromScore(score: number) {
+  if (score >= 85) return { label: 'Extreme', color: '#a855f7' }
+  if (score >= 70) return { label: 'Severe', color: '#ef4444' }
+  if (score >= 50) return { label: 'High', color: '#f97316' }
+  if (score >= 25) return { label: 'Moderate', color: '#f59e0b' }
+  return { label: 'Low', color: '#22c55e' }
+}
+
+function estimateRegionPopulation(region: RegionData | null | undefined): number {
+  const populationScore = feature(region, 'PopulationScore', 50)
+  const urbanization = feature(region, 'Urbanization', 50)
+  const baseline = Number(region?.baseline_vulnerability_score ?? 50)
+  const continentFactor = region?.continent === 'Asia' ? 1.22 : region?.continent === 'Africa' ? 1.08 : 0.92
+  return Math.round((60000 + populationScore * populationScore * 1450 + urbanization * 18500 + baseline * 9000) * continentFactor)
+}
+
+function estimateExposedPopulation(region: RegionData | null | undefined, regionData: RegionData[]): number {
+  if (!region || region.city === ALL_CITIES_LABEL) {
+    return Math.round(regionData.reduce((sum, item) => sum + estimateExposedPopulation(item, regionData), 0))
+  }
+  if (Number.isFinite(Number(region.exposed_population))) return Math.round(Number(region.exposed_population))
+  const risk = Number(region.risk_score ?? 0)
+  const vulnerability = Number(region.baseline_vulnerability_score ?? feature(region, 'PopulationScore', 50))
+  const rainfall = Number(region.rainfall_mm ?? 0)
+  const water = Number(region.water_level_index ?? 0)
+  const exposureRate = clamp(
+    risk * 0.0048 + vulnerability * 0.0022 + Math.min(rainfall, 180) * 0.0011 + water * 0.0015,
+    0.015,
+    0.78,
+  )
+  return Math.round(estimateRegionPopulation(region) * exposureRate)
+}
+
+function infrastructureInventory(region: RegionData | null | undefined): Required<InfrastructureInventory> {
+  const inventory = region?.infrastructure ?? {}
+  return {
+    hospitals: Number.isFinite(Number(inventory.hospitals)) ? Number(inventory.hospitals) : 0,
+    schools: Number.isFinite(Number(inventory.schools)) ? Number(inventory.schools) : 0,
+    road_km: Number.isFinite(Number(inventory.road_km)) ? Number(inventory.road_km) : 0,
+    power_assets: Number.isFinite(Number(inventory.power_assets)) ? Number(inventory.power_assets) : 0,
+    critical_facilities: Number.isFinite(Number(inventory.critical_facilities)) ? Number(inventory.critical_facilities) : 0,
+  }
+}
+
+function estimateInfrastructureImpact(region: RegionData | null | undefined, regionData: RegionData[]): InfrastructureImpactEstimate {
+  if (!region || region.city === ALL_CITIES_LABEL) {
+    return regionData.reduce<InfrastructureImpactEstimate>((sum, item) => {
+      const impact = estimateInfrastructureImpact(item, regionData)
+      return {
+        roadsKm: sum.roadsKm + impact.roadsKm,
+        hospitals: sum.hospitals + impact.hospitals,
+        schools: sum.schools + impact.schools,
+        power: sum.power + impact.power,
+        criticalFacilities: sum.criticalFacilities + impact.criticalFacilities,
+      }
+    }, { roadsKm: 0, hospitals: 0, schools: 0, power: 0, criticalFacilities: 0 })
+  }
+  const risk = Number(region.risk_score ?? 0)
+  const infra = infrastructureProfile(region ?? null, regionData)
+  const inventory = infrastructureInventory(region)
+  const exposedPopulation = estimateExposedPopulation(region, regionData)
+  const populationPressure = clamp(Math.log10(Math.max(10, exposedPopulation)) * 7, 0, 45)
+  const rainfallSeverity = clamp(Number(region.rainfall_mm ?? 0) / 2.2, 0, 100)
+  const vulnerability = Number(region.baseline_vulnerability_score ?? feature(region, 'PopulationScore', 50))
+  const exposureRate = clamp(
+    risk * 0.0048
+    + vulnerability * 0.0018
+    + rainfallSeverity * 0.0015
+    + infra.infrastructureStrain * 0.0012
+    + infra.drainageStress * 0.0009
+    + populationPressure * 0.001,
+    0,
+    0.92,
+  )
+  return {
+    roadsKm: Math.round(clamp(inventory.road_km * exposureRate, 0, inventory.road_km) * 10) / 10,
+    hospitals: Math.round(clamp(inventory.hospitals * exposureRate, 0, inventory.hospitals)),
+    schools: Math.round(clamp(inventory.schools * exposureRate, 0, inventory.schools)),
+    power: Math.round(clamp(inventory.power_assets * exposureRate, 0, inventory.power_assets)),
+    criticalFacilities: Math.round(clamp(inventory.critical_facilities * exposureRate, 0, inventory.critical_facilities)),
+  }
+}
+
+function responseReadinessScore(region: RegionData | null | undefined, regionData: RegionData[]): number {
+  const infra = infrastructureProfile(region ?? null, regionData)
+  const risk = Number(region?.risk_score ?? average(regionData.map(r => Number(r.risk_score ?? 0))))
+  return Math.round(clamp(infra.resilienceScore * 0.62 + (100 - risk) * 0.22 + (100 - infra.infrastructureStrain) * 0.16, 0, 100))
+}
+
+function buildResponseChecklist(score: number) {
+  const severity = severityFromScore(score).label
+  const isModerate = score >= 25
+  const isHigh = score >= 50
+  const isSevere = score >= 70
+  const isExtreme = score >= 85
+  return [
+    { category: 'Monitoring', active: true, action: isModerate ? `Maintain ${severity.toLowerCase()} watch cadence and verify rainfall telemetry every cycle.` : 'Continue routine river, rainfall, and cache telemetry checks.' },
+    { category: 'Evacuation', active: isHigh, action: isHigh ? 'Pre-stage evacuation routes and confirm shelter readiness for exposed wards.' : 'Keep shelter and route inventory ready for escalation.' },
+    { category: 'Emergency Services', active: isSevere, action: isSevere ? 'Place rescue, medical, and incident command units on active deployment posture.' : 'Confirm team availability and mutual-aid contacts.' },
+    { category: 'Infrastructure Protection', active: isHigh, action: isHigh ? 'Inspect drainage, power nodes, hospitals, schools, and road chokepoints.' : 'Prioritize maintenance checks for drainage and utility assets.' },
+    { category: 'Public Communication', active: isModerate, action: isExtreme ? 'Issue urgent public advisories with evacuation and road-closure instructions.' : isModerate ? 'Publish watch advisories and preparedness guidance.' : 'Maintain standard public information monitoring.' },
+  ]
+}
+
+function buildTelemetryCsv(rows: RegionData[], dataMode: DataMode) {
+  const headers = [
+    'city',
+    'country',
+    'timestamp',
+    'rainfall_mm',
+    'flood_risk_score',
+    'severity',
+    'exposed_population',
+    'affected_hospitals',
+    'affected_schools',
+    'affected_road_km',
+    'affected_power_assets',
+    'affected_critical_facilities',
+    'model_prediction',
+    'telemetry_mode',
+  ]
+  const timestamp = new Date().toISOString()
+  const escape = (value: unknown) => `"${String(value ?? '').replace(/"/g, '""')}"`
+  const body = rows.map(region => {
+    const score = Number(region.risk_score ?? 0)
+    const impact = estimateInfrastructureImpact(region, rows)
+    return [
+      region.city,
+      region.country,
+      timestamp,
+      Number(region.rainfall_mm ?? 0).toFixed(2),
+      score.toFixed(2),
+      severityFromScore(score).label,
+      estimateExposedPopulation(region, rows),
+      impact.hospitals,
+      impact.schools,
+      impact.roadsKm.toFixed(1),
+      impact.power,
+      impact.criticalFacilities,
+      region.model_type ?? region.inference_status ?? 'GradientBoostingRegressor',
+      region.mode ?? dataMode.toUpperCase(),
+    ].map(escape).join(',')
+  })
+  return [headers.join(','), ...body].join('\n')
+}
+
+function downloadCsv(filename: string, csv: string) {
+  if (typeof window === 'undefined') return
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  URL.revokeObjectURL(url)
+}
+
 function commandColors(accent: 'emerald' | 'cyan' | 'red' | 'blue' | 'violet' | 'amber') {
   const map = {
     emerald: { text: 'text-emerald-300', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', dot: 'bg-emerald-400', hex: '#34d399' },
@@ -1792,6 +2277,13 @@ function buildGlobalRegion(regionData: RegionData[]): RegionData | null {
       DamsQuality:         average(regionData.map(r => feature(r, 'DamsQuality'))),
       InadequatePlanning:  average(regionData.map(r => feature(r, 'InadequatePlanning'))),
       PopulationScore:     average(regionData.map(r => feature(r, 'PopulationScore'))),
+    },
+    infrastructure: {
+      hospitals:           regionData.reduce((sum, r) => sum + infrastructureInventory(r).hospitals, 0),
+      schools:             regionData.reduce((sum, r) => sum + infrastructureInventory(r).schools, 0),
+      road_km:             Math.round(regionData.reduce((sum, r) => sum + infrastructureInventory(r).road_km, 0) * 10) / 10,
+      power_assets:        regionData.reduce((sum, r) => sum + infrastructureInventory(r).power_assets, 0),
+      critical_facilities: regionData.reduce((sum, r) => sum + infrastructureInventory(r).critical_facilities, 0),
     },
     infrastructure_intelligence: {
       drainage_stress:          average(regionData.map(r => infraValue(r, 'drainage_stress', 50))),
