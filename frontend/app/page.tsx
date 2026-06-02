@@ -41,7 +41,7 @@ type RegionData = RawRegionPoint & {
   geojson?: Record<string, any>
 }
 
-type RightPanelTab = 'ai' | 'alerts' | 'zones' | 'reports' | 'timeline' | 'response'
+type RightPanelTab = 'ai' | 'alerts' | 'zones' | 'reports' | 'timeline' | 'response' | 'project'
 type DataMode = 'live' | 'historical'
 
 const ALL_CITIES = 'all'
@@ -54,9 +54,10 @@ const RIGHT_PANEL_TABS: { id: RightPanelTab; label: string }[] = [
   { id: 'ai',       label: 'AI'       },
   { id: 'alerts',   label: 'Alerts'   },
   { id: 'zones',    label: 'Zones'    },
-  { id: 'reports',  label: 'Reports'  },
-  { id: 'timeline', label: 'Timeline' },
+  { id: 'project',  label: 'Project'  },
   { id: 'response', label: 'Response' },
+  { id: 'timeline', label: 'Timeline' },
+  { id: 'reports',  label: 'Reports'  },
 ]
 
 let regionCacheByMode: Partial<Record<DataMode, RegionData[]>> = {}
@@ -360,7 +361,7 @@ export default function CommandCenter() {
           LAYER 2 — TOP NAVBAR  z-700
       ══════════════════════════════════════════════════════════════════════ */}
       <nav
-        className="fixed inset-x-0 top-0 z-[700] h-[64px] flex items-center px-5 gap-1.5 border-b border-emerald-500/20"
+        className="fixed inset-x-0 top-0 z-[700] h-[64px] flex items-center px-5 gap-4 border-b border-emerald-500/20"
         style={{
           background: 'linear-gradient(180deg,rgba(2,6,23,0.97) 0%,rgba(2,6,23,0.88) 100%)',
           backdropFilter: 'blur(16px)',
@@ -374,7 +375,7 @@ export default function CommandCenter() {
               whitespace-nowrap
               text-emerald-400
               font-bold
-              text-3xl
+              text-2xl
               uppercase
               tracking-[0.04em]
               font-['Orbitron']
@@ -382,117 +383,109 @@ export default function CommandCenter() {
           >
             FLUVIO
           </span>
-
-          <span
-            className="
-              text-[11px]
-              uppercase
-              tracking-[0.08em]
-              text-cyan-400/60
-              mt-0.5
-              font-semibold
-            "
-          >
-            Real-Time Flood Monitoring System
+          <span className="text-[9px] uppercase tracking-[0.08em] text-cyan-400/60 mt-0.5 font-semibold">
+            Flood Intel Command
           </span>
         </div>
 
-        {/* KPI Pills */}
-        <div className="flex flex-nowrap shrink-0 gap-3" style={{ scrollbarWidth: 'none' }}>
+        {/* KPI Row - Essential only */}
+        <div className="flex items-center gap-3 overflow-hidden">
           <KPI label="Regions"   value={loading ? '--' : `${regionData.length}`}                   accent="cyan"    />
           <KPI label="Critical"  value={loading ? '--' : `${criticalCount}`}                       accent="red"     />
           <KPI label="Exposed Pop" value={loading ? '--' : formatDisplayNumber(exposedPopulation, 0)} accent="emerald" />
           <KPI label="Selected"  value={selectedRegionLabel}                                       accent="violet"  />
         </div>
 
-        {/* Analytics Button */}
-        <motion.button
-          onClick={() => setAnalyticsOpen(value => !value)}
-          whileHover={{ scale: 1.03, y: -1 }}
-          whileTap={{ scale: 0.97 }}
-          className="
-            shrink-0 h-9 px-3 rounded-lg
-            border border-violet-500/30 bg-violet-500/10
-            hover:bg-violet-500/20 hover:border-violet-400/50
-            text-violet-300 hover:text-violet-200
-            text-[9px] uppercase tracking-widest font-bold
-            transition-all duration-200
-            hover:shadow-[0_0_20px_rgba(168,85,247,0.20)]
-          "
-        >
-          Analysis
-        </motion.button>
+        <div className="h-9 w-px bg-white/10 shrink-0 mx-1" />
 
-        <DatasetExportControls
-          currentDataset={visibleRegionData}
-          selectedRegion={selectedRegion}
-          regionData={regionData}
-          dataMode={dataMode}
-          compact
-        />
+        {/* Primary Actions */}
+        <div className="flex items-center gap-2 shrink-0">
+          <motion.button
+            onClick={() => setAnalyticsOpen(value => !value)}
+            whileHover={{ scale: 1.03, y: -1 }}
+            whileTap={{ scale: 0.97 }}
+            className="
+              h-9 px-4 rounded-lg
+              border border-violet-500/30 bg-violet-500/10
+              hover:bg-violet-500/20 hover:border-violet-400/50
+              text-violet-300 hover:text-violet-200
+              text-[10px] uppercase tracking-widest font-bold
+              transition-all duration-200
+              flex items-center gap-2
+            "
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83" /><path d="M22 12A10 10 0 0 0 12 2v10z" /></svg>
+            Analytics
+          </motion.button>
 
-        {/* Data Mode Toggle */}
-        <div className="shrink-0 flex items-center h-9 rounded-lg border border-emerald-500/20 bg-[#06111d] p-0.5">
-          {(['live', 'historical'] as DataMode[]).map(mode => (
-            <button
-              key={mode}
-              onClick={() => setDataMode(mode)}
-              className={`
-                px-2.5 h-full flex items-center text-[9px] uppercase tracking-[0.1em] font-bold rounded-md transition-all duration-200
-                ${dataMode === mode
-                  ? mode === 'live'
-                    ? 'bg-emerald-500/20 text-emerald-300 shadow-[0_0_14px_rgba(16,185,129,0.16)]'
-                    : 'bg-cyan-500/15 text-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.12)]'
-                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
-                }
-              `}
-            >
-              {mode === 'live' && (
-                <span className="inline-block w-1 h-1 rounded-full bg-emerald-400 animate-pulse mr-1" />
-              )}
-              {mode}
-            </button>
-          ))}
+          <DatasetExportControls
+            currentDataset={visibleRegionData}
+            selectedRegion={selectedRegion}
+            regionData={regionData}
+            dataMode={dataMode}
+          />
+
+          {/* Data Mode Toggle */}
+          <div className="flex items-center h-9 rounded-lg border border-emerald-500/20 bg-[#06111d] p-0.5">
+            {(['live', 'historical'] as DataMode[]).map(mode => (
+              <button
+                key={mode}
+                onClick={() => setDataMode(mode)}
+                className={`
+                  px-3 h-full flex items-center text-[10px] uppercase tracking-[0.1em] font-bold rounded-md transition-all duration-200
+                  ${dataMode === mode
+                    ? mode === 'live'
+                      ? 'bg-emerald-500/20 text-emerald-300'
+                      : 'bg-cyan-500/15 text-cyan-300'
+                    : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
+                  }
+                `}
+              >
+                {mode}
+              </button>
+            ))}
+          </div>
+
+          {/* City Filter */}
+          <select
+            value={selectedCity}
+            onChange={(e) => {
+              const city = e.target.value
+              setSelectedCity(city)
+              if (city === ALL_CITIES) {
+                setSelectedRegion(null)
+                return
+              }
+              const found = regionData.find(r => r.city === city)
+              if (found) handleSelectRegion(found)
+            }}
+            className="
+              h-9 bg-[#07111f] border border-emerald-500/20 text-gray-300
+              text-[11px] px-3 rounded-lg outline-none font-bold uppercase tracking-wider
+              hover:border-emerald-400/40 focus:border-emerald-400 transition-all
+            "
+          >
+            <option value={ALL_CITIES}>Filter Region</option>
+            {[...new Set(regionData.map(r => r.city))].map((city, i) => (
+              <option key={i} value={city}>{city}</option>
+            ))}
+          </select>
         </div>
 
-        {/* City Filter */}
-        <select
-          value={selectedCity}
-          onChange={(e) => {
-            const city = e.target.value
-            setSelectedCity(city)
-            if (city === ALL_CITIES) {
-              pendingInitialFlyRef.current = null
-              lastSelectedCityRef.current = null
-              setSelectedRegion(null)
-              return
-            }
-            const found = regionData.find(r => r.city === city)
-            if (found) handleSelectRegion(found)
-          }}
-          className="
-            shrink-0 h-9 bg-[#07111f] border border-emerald-500/20 text-gray-300
-            text-[12px] px-3 rounded-lg outline-none
-            hover:border-emerald-400/40 focus:border-emerald-400 transition-all
-          "
-        >
-          <option value={ALL_CITIES}>All Cities</option>
-          {[...new Set(regionData.map(r => r.city))].map((city, i) => (
-            <option key={i} value={city}>{city}</option>
-          ))}
-        </select>
+        {/* Spacer to push time/status right */}
+        <div className="flex-1" />
 
         {/* Status & Time */}
-        <div className="ml-auto flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           {apiError && (
-            <div className="shrink-0 h-9 flex items-center gap-1.5 px-2.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-amber-400 text-[9px] font-bold tracking-widest uppercase">
-              <div className="w-1 h-1 rounded-full bg-amber-400 animate-pulse" />
-              CACHED
+            <div className="h-9 flex items-center gap-1.5 px-3 rounded-lg bg-amber-500/10 border border-amber-500/25 text-amber-400 text-[10px] font-bold tracking-widest uppercase">
+              <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              OFFLINE_CACHE
             </div>
           )}
-          <div className="shrink-0 h-9 flex items-center gap-2.5 px-3 rounded-lg bg-emerald-500/5 border border-emerald-500/15">
-            <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-gray-400 text-[10px] font-bold tabular-nums tracking-widest">{time}</span>
+          <div className="h-9 flex items-center gap-3 px-4 rounded-lg bg-[#06111d] border border-emerald-500/15">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
+            <span className="text-gray-400 text-[12px] font-bold tabular-nums tracking-widest">{time}</span>
           </div>
         </div>
       </nav>
@@ -603,6 +596,7 @@ export default function CommandCenter() {
                 >
                   <RightPanelContent
                     activeTab={activeTab}
+                    setActiveTab={setActiveTab}
                     selectedRegion={selectedRegion}
                     regionData={regionData}
                     dataMode={dataMode}
@@ -782,6 +776,7 @@ export default function CommandCenter() {
 // ══════════════════════════════════════════════════════════════════════════════
 function RightPanelContent({
   activeTab,
+  setActiveTab,
   selectedRegion,
   regionData,
   dataMode,
@@ -789,6 +784,7 @@ function RightPanelContent({
   mapPoints,
 }: {
   activeTab: RightPanelTab
+  setActiveTab: (tab: RightPanelTab) => void
   selectedRegion: RegionData | null
   regionData: RegionData[]
   dataMode: DataMode
@@ -824,12 +820,32 @@ function RightPanelContent({
       return (
         <>
           <SectionTitle label="AI Insights" color="text-emerald-400" />
+          
+          {/* Action Row */}
+          <div className="flex gap-2">
+            <button
+              onClick={() => setActiveTab('response')}
+              className="flex-1 flex items-center justify-center gap-2 h-9 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-500/25 transition-all"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+              View Protocol
+            </button>
+            <button
+              onClick={() => setActiveTab('alerts')}
+              className="flex-1 flex items-center justify-center gap-2 h-9 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold uppercase tracking-widest hover:bg-red-500/20 transition-all"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+              Monitor Alerts
+            </button>
+          </div>
+
           <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-3">
-            <div className="text-xs text-emerald-300/60">
-              Model: {modelLabel} &middot; {dataMode === 'live' ? 'Live inference' : 'Historical profile'}
+            <div className="text-xs text-emerald-300/60 flex items-center justify-between">
+              <span>Model: {modelLabel}</span>
+              <span className="text-[10px] opacity-60 uppercase">{dataMode} mode</span>
             </div>
-            <div className="text-xs text-emerald-300/40 mt-1">
-              Status: {focusRegion?.inference_status ?? 'ok'}
+            <div className="text-[10px] text-emerald-300/40 mt-1 uppercase tracking-tighter">
+              Inference status: {focusRegion?.inference_status ?? 'ok'} &middot; rank #{rank} of {regionData.length}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -1095,6 +1111,52 @@ function RightPanelContent({
                 <span className="text-gray-600">{t.threshold}</span>
               </div>
             ))}
+          </div>
+        </>
+      )
+    }
+
+    // ── PROJECT TAB ────────────────────────────────────────────────────────
+    case 'project': {
+      return (
+        <>
+          <SectionTitle label="Why This Matters" color="text-emerald-400" />
+          <div className="space-y-3">
+            <div className="p-3 bg-white/3 border border-white/6 rounded-xl">
+              <h4 className="text-xs font-bold text-gray-200 mb-1">Human & Economic Impact</h4>
+              <p className="text-[11px] text-gray-400 leading-relaxed">
+                Flood events threaten infrastructure, displace populations, and cause cascading economic damage. Real-time intelligence enables coordinated emergency response and protects critical assets.
+              </p>
+            </div>
+            <div className="p-3 bg-white/3 border border-white/6 rounded-xl">
+              <h4 className="text-xs font-bold text-gray-200 mb-1">Infrastructure Protection</h4>
+              <p className="text-[11px] text-gray-400 leading-relaxed">
+                By identifying at-risk hospitals, schools, and power facilities before water levels peak, authorities can deploy physical barriers and move sensitive equipment.
+              </p>
+            </div>
+          </div>
+
+          <SectionTitle label="Who Controls The Rails" color="text-cyan-400" />
+          <div className="space-y-3">
+            <div className="p-3 bg-cyan-500/5 border border-cyan-500/15 rounded-xl">
+              <h4 className="text-xs font-bold text-cyan-300 mb-1">Risk Calculation Pipeline</h4>
+              <div className="space-y-2 mt-2">
+                {[
+                  { step: '1. Telemetry', desc: 'Live Open-Meteo rainfall & humidity' },
+                  { step: '2. Inventory', desc: 'OSM infrastructure & population density' },
+                  { step: '3. ML Inference', desc: 'Gradient Boost model (trained on historicals)' },
+                  { step: '4. Calibration', desc: 'Composite weighting of environmental & static risk' }
+                ].map(s => (
+                  <div key={s.step} className="flex flex-col gap-0.5">
+                    <span className="text-[10px] font-bold text-gray-300 uppercase">{s.step}</span>
+                    <span className="text-[10px] text-gray-500">{s.desc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p className="text-[10px] text-gray-600 italic px-1">
+              The FLUVIO engine automates this pipeline every 15 minutes to provide a high-confidence operational posture.
+            </p>
           </div>
         </>
       )
@@ -1445,71 +1507,58 @@ function DatasetExportControls({
   selectedRegion,
   regionData,
   dataMode,
-  compact = false,
 }: {
   currentDataset: RegionData[]
   selectedRegion: RegionData | null
   regionData: RegionData[]
   dataMode: DataMode
-  compact?: boolean
 }) {
-  const [scope, setScope] = useState<'selected' | 'cache'>('cache')
   const [menuOpen, setMenuOpen] = useState(false)
   
   const download = (target: 'selected' | 'cache') => {
-    setScope(target)
     setMenuOpen(false)
-    
     const liveCache = readLatestLiveCache()
     const cachedRows = liveCache ?? regionCacheByMode[dataMode] ?? regionData
     const selectedRows = selectedRegion
       ? cachedRows.filter(row => row.city === selectedRegion.city)
       : currentDataset
-    const datasets: Record<typeof target, RegionData[]> = {
-      selected: selectedRows,
-      cache: cachedRows,
-    }
-    const rows = datasets[target] ?? []
+    const rows = target === 'selected' ? selectedRows : cachedRows
     if (!rows.length) return
-    const exportMode = dataMode
-    downloadCsv(`flood-dataset-${target}-${new Date().toISOString().slice(0, 10)}.csv`, buildTelemetryCsv(rows, exportMode))
+    downloadCsv(`flood-dataset-${target}-${new Date().toISOString().slice(0, 10)}.csv`, buildTelemetryCsv(rows, dataMode))
   }
 
   return (
-    <div className={`shrink-0 relative ${compact ? 'max-lg:hidden' : ''}`}>
+    <div className="shrink-0 relative">
       <button
         type="button"
         onClick={() => setMenuOpen(!menuOpen)}
-        className="h-9 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 text-[10px] font-bold uppercase tracking-wide text-emerald-300 transition-colors hover:border-emerald-400/50 hover:bg-emerald-500/20 hover:shadow-[0_0_20px_rgba(16,185,129,0.16)] inline-flex items-center gap-1.5"
+        className="h-9 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 text-[10px] font-bold uppercase tracking-widest text-emerald-300 transition-all hover:bg-emerald-500/20 hover:border-emerald-400/50 flex items-center gap-2"
       >
-        EXPORT
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className={`transition-transform ${menuOpen ? 'rotate-180' : ''}`}>
-          <path d="M1 3.5L5 7L9 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+        Export
       </button>
       
       {menuOpen && (
-        <div className="absolute top-full mt-1.5 right-0 z-40 rounded-lg border border-emerald-500/25 bg-[#030d1a] overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.60)]" style={{minWidth: '220px'}}>
-          <button
-            type="button"
-            onClick={() => download('cache')}
-            className="w-full px-4 py-2.5 text-left text-[10px] uppercase tracking-wider font-semibold text-emerald-300 hover:bg-emerald-500/15 transition-colors border-b border-emerald-500/10"
-          >
-            Export Current Cache
-          </button>
-          <button
-            type="button"
-            onClick={() => download('selected')}
-            disabled={!selectedRegion}
-            className={`w-full px-4 py-2.5 text-left text-[10px] uppercase tracking-wider font-semibold transition-colors ${
-              selectedRegion 
-                ? 'text-emerald-300 hover:bg-emerald-500/15' 
-                : 'text-gray-600 cursor-not-allowed'
-            }`}
-          >
-            {selectedRegion ? `Export Selected City Cache (${selectedRegion.city})` : 'Export Selected City Cache (none)'}
-          </button>
-        </div>
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
+          <div className="absolute top-full mt-1.5 right-0 z-50 rounded-lg border border-emerald-500/25 bg-[#030d1a] overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.60)] min-w-[200px]">
+            <button
+              onClick={() => download('cache')}
+              className="w-full px-4 py-3 text-left text-[10px] uppercase tracking-wider font-bold text-emerald-300 hover:bg-emerald-500/15 transition-colors border-b border-emerald-500/10"
+            >
+              Export Global Cache
+            </button>
+            <button
+              onClick={() => download('selected')}
+              disabled={!selectedRegion}
+              className={`w-full px-4 py-3 text-left text-[10px] uppercase tracking-wider font-bold transition-colors ${
+                selectedRegion ? 'text-emerald-300 hover:bg-emerald-500/15' : 'text-gray-600 cursor-not-allowed'
+              }`}
+            >
+              Export Selected City
+            </button>
+          </div>
+        </>
       )}
     </div>
   )

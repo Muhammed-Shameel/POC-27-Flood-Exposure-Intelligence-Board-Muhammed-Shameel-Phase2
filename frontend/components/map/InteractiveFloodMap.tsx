@@ -330,82 +330,56 @@ export default function InteractiveFloodMap({
         })}
       </MapContainer>
 
-      <div className={`pointer-events-auto absolute left-4 top-4 z-[500] rounded-lg border border-emerald-500/30 bg-[#020b16]/95 p-3 shadow-[0_0_32px_rgba(16,185,129,0.15)] backdrop-blur-sm transition-all duration-300 ${isInfraExpanded ? 'w-64' : 'w-14 h-12 flex items-center justify-center p-0 overflow-hidden'}`}>
+      <div className={`pointer-events-auto absolute right-4 top-4 z-[500] rounded-lg border border-emerald-500/30 bg-[#020b16]/95 p-3 shadow-[0_0_32px_rgba(16,185,129,0.15)] backdrop-blur-sm transition-all duration-300 ${isInfraExpanded ? 'w-64' : 'w-12 h-10 flex items-center justify-center p-0 overflow-hidden'}`}>
         {!isInfraExpanded ? (
           <button 
             onClick={() => setIsInfraExpanded(true)}
             className="w-full h-full flex flex-col items-center justify-center text-emerald-300 hover:bg-emerald-500/10 transition-colors"
-            title="Expand Infrastructure Layers"
+            title="Layer Controls"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="12 2 2 7 12 12 22 7 12 2" />
               <polyline points="2 17 12 22 22 17" />
               <polyline points="2 12 12 17 22 12" />
             </svg>
-            <span className="text-[8px] font-bold mt-0.5 tracking-tighter">INFRA</span>
           </button>
         ) : (
           <>
-            {/* Header */}
-            <div className="mb-4 border-b border-emerald-500/20 pb-2 flex items-center justify-between">
-              <h3 className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">Infrastructure Intelligence</h3>
-              <button 
-                onClick={() => setIsInfraExpanded(false)}
-                className="text-gray-500 hover:text-emerald-300 p-1"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
+            <div className="mb-3 border-b border-emerald-500/20 pb-2 flex items-center justify-between">
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">Intelligence Layers</h3>
+              <button onClick={() => setIsInfraExpanded(false)} className="text-gray-500 hover:text-emerald-300 p-1">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
               </button>
             </div>
 
-            {/* Flood Toggle */}
-            <div className="mb-3 flex items-center justify-between rounded bg-emerald-500/5 px-3 py-2 border border-emerald-500/15">
-              <span className="flex items-center gap-2">
-                <div className="h-2.5 w-2.5 rounded-full bg-cyan-400/80"></div>
-                <span className="text-xs font-semibold text-gray-200">Flood Zones</span>
-              </span>
+            <div className="space-y-2">
               <button
-                type="button"
-                onClick={() => setInundationVisible(value => !value)}
-                className={`relative h-5 w-9 rounded-full transition-all ${
-                  inundationVisible
-                    ? 'bg-cyan-500/30'
-                    : 'bg-gray-700/30'
+                onClick={() => setInundationVisible(v => !v)}
+                className={`w-full flex items-center justify-between rounded px-2.5 py-1.5 transition-all border ${
+                  inundationVisible ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-200' : 'bg-white/5 border-transparent text-gray-500'
                 }`}
               >
-                <div className={`absolute top-0.5 h-4 w-4 rounded-full bg-cyan-400 transition-transform ${
-                  inundationVisible ? 'translate-x-4' : 'translate-x-0.5'
-                }`} />
+                <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider">
+                  <div className={`h-1.5 w-1.5 rounded-full ${inundationVisible ? 'bg-cyan-400' : 'bg-gray-600'}`} />
+                  Flood Inundation
+                </span>
+                <span className="text-[9px] font-bold">{inundationVisible ? 'ON' : 'OFF'}</span>
               </button>
-            </div>
 
-            {/* Asset Toggles */}
-            <div className="space-y-2">
+              <div className="pt-1 pb-1 px-1 text-[8px] font-bold text-gray-600 uppercase tracking-[0.2em]">Asset Inventory</div>
               {ASSET_OVERLAYS.map(asset => (
                 <button
                   key={asset.key}
-                  type="button"
-                  onClick={() => setAssetVisibility(current => ({ ...current, [asset.key]: !current[asset.key] }))}
-                  className={`group w-full flex items-center justify-between rounded px-3 py-2 transition-all ${
-                    assetVisibility[asset.key] 
-                      ? 'bg-gradient-to-r from-emerald-500/20 to-emerald-500/5 border border-emerald-500/30' 
-                      : 'border border-transparent hover:bg-white/5 hover:border-emerald-500/15'
+                  onClick={() => setAssetVisibility(c => ({ ...c, [asset.key]: !c[asset.key] }))}
+                  className={`w-full flex items-center justify-between rounded px-2.5 py-1.5 transition-all border ${
+                    assetVisibility[asset.key] ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-200' : 'bg-white/5 border-transparent text-gray-500'
                   }`}
                 >
-                  <span className="flex items-center gap-2.5">
-                    <div className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: asset.color, opacity: assetVisibility[asset.key] ? 1 : 0.5 }} />
-                    <span className={`text-xs font-medium ${assetVisibility[asset.key] ? 'text-gray-100' : 'text-gray-400 group-hover:text-gray-300'}`}>
-                      {asset.label}
-                    </span>
+                  <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider">
+                    <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: asset.color, opacity: assetVisibility[asset.key] ? 1 : 0.4 }} />
+                    {asset.label}
                   </span>
-                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded ${
-                    assetVisibility[asset.key]
-                      ? 'bg-emerald-500/20 text-emerald-300'
-                      : 'text-gray-600'
-                  }`}>
-                    {assetVisibility[asset.key] ? 'ON' : 'OFF'}
-                  </span>
+                  <span className="text-[9px] font-bold">{assetVisibility[asset.key] ? 'ON' : 'OFF'}</span>
                 </button>
               ))}
             </div>
@@ -413,37 +387,27 @@ export default function InteractiveFloodMap({
         )}
       </div>
 
-      <div className={`pointer-events-auto absolute bottom-5 left-4 z-[500] rounded-lg border border-emerald-500/30 bg-[#020b16]/95 p-4 shadow-[0_0_32px_rgba(16,185,129,0.15)] backdrop-blur-sm transition-all duration-300 ${isSeverityExpanded ? 'w-72' : 'w-14 h-12 flex items-center justify-center p-0 overflow-hidden'}`}>
+      <div className={`pointer-events-auto absolute bottom-4 right-4 z-[500] rounded-lg border border-emerald-500/30 bg-[#020b16]/95 p-3 shadow-[0_0_32px_rgba(16,185,129,0.15)] backdrop-blur-sm transition-all duration-300 ${isSeverityExpanded ? 'w-64' : 'w-12 h-10 flex items-center justify-center p-0 overflow-hidden'}`}>
         {!isSeverityExpanded ? (
           <button 
             onClick={() => setIsSeverityExpanded(true)}
             className="w-full h-full flex flex-col items-center justify-center text-emerald-300 hover:bg-emerald-500/10 transition-colors"
-            title="Expand Severity Legend"
+            title="Severity Legend"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 20v-6M6 20V10M18 20V4" />
             </svg>
-            <span className="text-[8px] font-bold mt-0.5 tracking-tighter">DIST</span>
           </button>
         ) : (
           <>
-            {/* Header */}
-            <div className="mb-3 border-b border-emerald-500/20 pb-2 flex items-center justify-between">
-              <div>
-                <h3 className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">Severity Distribution</h3>
-              </div>
-              <button 
-                onClick={() => setIsSeverityExpanded(false)}
-                className="text-gray-500 hover:text-emerald-300 p-1"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
+            <div className="mb-2 border-b border-emerald-500/20 pb-2 flex items-center justify-between">
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">Severity Profile</h3>
+              <button onClick={() => setIsSeverityExpanded(false)} className="text-gray-500 hover:text-emerald-300 p-1">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
               </button>
             </div>
 
-            {/* Severity Level Bars */}
-            <div className="space-y-2.5">
+            <div className="space-y-1.5">
               {[
                 { name: 'Extreme', minScore: 85, color: '#a855f7' },
                 { name: 'Severe', minScore: 70, color: '#ef4444' },
@@ -452,56 +416,30 @@ export default function InteractiveFloodMap({
                 { name: 'Low', minScore: 0, color: '#22c55e' },
               ].map(level => {
                 const count = zones.filter(z => {
-                  const score = z.intensity ?? 0
-                  return level.minScore === 85 
-                    ? score >= 85
-                    : level.minScore === 70
-                    ? score >= 70 && score < 85
-                    : level.minScore === 50
-                    ? score >= 50 && score < 70
-                    : level.minScore === 25
-                    ? score >= 25 && score < 50
-                    : score >= 0 && score < 25
+                  const s = z.intensity ?? 0
+                  if (level.minScore === 85) return s >= 85
+                  if (level.minScore === 70) return s >= 70 && s < 85
+                  if (level.minScore === 50) return s >= 50 && s < 70
+                  if (level.minScore === 25) return s >= 25 && s < 50
+                  return s >= 0 && s < 25
                 }).length
-                const percentage = zones.length > 0 ? Math.round((count / zones.length) * 100) : 0
-
+                const pct = zones.length > 0 ? Math.round((count / zones.length) * 100) : 0
                 return (
-                  <div key={level.name} className="flex items-center gap-3">
-                    {/* Label & Metrics */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-semibold text-gray-200">{level.name}</span>
-                        <span className="text-[10px] text-gray-400">{count} zones</span>
-                      </div>
-                      {/* Progress Bar */}
-                      <div className="h-1.5 rounded-full bg-gray-700/40 overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all duration-500"
-                          style={{
-                            width: `${percentage}%`,
-                            backgroundColor: level.color,
-                            opacity: percentage > 0 ? 0.75 : 0.2,
-                          }}
-                        />
-                      </div>
+                  <div key={level.name} className="flex flex-col gap-0.5">
+                    <div className="flex items-center justify-between text-[9px] font-bold uppercase tracking-wider">
+                      <span className="text-gray-300">{level.name}</span>
+                      <span className="text-gray-500">{pct}%</span>
                     </div>
-                    {/* Percentage */}
-                    <span className="text-[10px] font-semibold text-gray-400 w-8 text-right">{percentage}%</span>
+                    <div className="h-1 rounded-full bg-white/5 overflow-hidden">
+                      <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: level.color, opacity: 0.8 }} />
+                    </div>
                   </div>
                 )
               })}
             </div>
-
-            {/* Footer Stats */}
-            <div className="mt-3 pt-3 border-t border-emerald-500/15 flex items-center justify-between text-[10px] text-gray-500">
+            <div className="mt-2 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-gray-600 font-bold uppercase tracking-tighter">
               <span>Total Zones: {zones.length}</span>
-              <span>
-                Avg: <span className="text-emerald-300 font-semibold">
-                  {zones.length > 0 
-                    ? Math.round((zones.reduce((sum, z) => sum + (z.intensity ?? 0), 0) / zones.length) * 10) / 10
-                    : '--'}
-                </span>
-              </span>
+              <span>Avg Risk: {zones.length > 0 ? Math.round(zones.reduce((s, z) => s + (z.intensity ?? 0), 0) / zones.length) : '--'}</span>
             </div>
           </>
         )}
