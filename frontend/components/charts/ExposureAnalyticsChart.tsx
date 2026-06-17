@@ -18,7 +18,7 @@ interface ExposureAnalyticsChartProps {
 export default function ExposureAnalyticsChart({
   data,
 }: ExposureAnalyticsChartProps) {
-  const COLORS = ['#38BDF8', '#818CF8', '#F97316', '#EF4444']
+  const COLORS = ['#38bdf8', '#64748b', '#fb923c', '#f87171']
 
   const chartData = data ?? []
 
@@ -33,7 +33,7 @@ export default function ExposureAnalyticsChart({
             innerRadius={60}
             outerRadius={100}
             paddingAngle={2}
-            fill="#8884d8"
+            fill="#333944"
             dataKey="value"
           >
             {chartData.map((entry, index) => (
@@ -42,9 +42,10 @@ export default function ExposureAnalyticsChart({
           </Pie>
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0B1117',
-              border: '1px solid #38BDF8',
+              backgroundColor: '#1e222a',
+              border: '1px solid #333944',
               borderRadius: '8px',
+              color: '#f8fafc',
             }}
             formatter={(value) => [formatMetric(Number(value), '%'), 'Exposure']}
           />
@@ -57,7 +58,7 @@ export default function ExposureAnalyticsChart({
               className="w-3 h-3 rounded-full"
               style={{ backgroundColor: COLORS[idx % COLORS.length] }}
             />
-            <span className="text-gray-400">{item.name}: {formatMetric(item.value, '%')}</span>
+            <span className="text-text-main/70">{item.name}: {formatMetric(item.value, '%')}</span>
           </div>
         ))}
       </div>

@@ -40,14 +40,15 @@ export default function RiskDistributionChart({
               <stop offset="100%" stopColor="#818CF8" stopOpacity={0.6} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1F2937" />
-          <XAxis dataKey="name" stroke="#6B7280" style={{ fontSize: '12px' }} />
-          <YAxis stroke="#6B7280" style={{ fontSize: '12px' }} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#333944" />
+          <XAxis dataKey="name" stroke="#f8fafc" style={{ fontSize: '12px' }} />
+          <YAxis stroke="#f8fafc" style={{ fontSize: '12px' }} />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0B1117',
-              border: '1px solid #818CF8',
+              backgroundColor: '#0f1115',
+              border: '1px solid #333944',
               borderRadius: '8px',
+              color: '#f8fafc'
             }}
             formatter={(value) => [`${formatDisplayNumber(Number(value), 0)} zones`, 'Count']}
             cursor={{ fill: 'rgba(129, 140, 248, 0.1)' }}

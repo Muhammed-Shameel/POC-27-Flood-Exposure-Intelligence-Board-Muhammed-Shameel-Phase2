@@ -27,7 +27,7 @@ export default function AnalyticsCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className={`
-        rounded-lg border backdrop-blur-sm
+        rounded-lg border backdrop-blur-sm bg-card-bg
         bg-gradient-to-br ${accentColors[accent]} to-transparent
         overflow-hidden ${className}
       `}

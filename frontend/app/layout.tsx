@@ -20,7 +20,7 @@ export default function RootLayout({
       lang="en"
       className={`${GeistSans.variable} ${GeistMono.variable}`}
     >
-      <body className="bg-dark-bg text-white antialiased">
+      <body className="bg-dark-bg text-main antialiased">
         {children}
       </body>
     </html>

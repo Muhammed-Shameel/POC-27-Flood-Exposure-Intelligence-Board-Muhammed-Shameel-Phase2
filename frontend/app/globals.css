@@ -15,17 +15,17 @@
   }
 
   body {
-    @apply bg-dark-bg text-white;
+    @apply bg-dark-bg text-main antialiased;
   }
 }
 
 @layer components {
   .glow-text {
-    @apply text-accent-cyan drop-shadow-lg;
+    @apply text-accent-cyan;
   }
 
   .glow-box {
-    @apply border border-border rounded-lg bg-card-bg shadow-lg shadow-accent-cyan/10;
+    @apply border border-border rounded-lg bg-card-bg;
   }
 
   .button-primary {
@@ -33,7 +33,7 @@
   }
 
   .button-secondary {
-    @apply px-3.5 py-3.5 border border-accent-indigo text-accent-indigo rounded-lg hover:bg-accent-indigo/10 transition-colors;
+    @apply px-3.5 py-3.5 border border-accent-indigo text-main rounded-lg hover:bg-border transition-colors;
   }
 
   .metric-card {
@@ -52,8 +52,8 @@
 
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
-  @apply bg-card-bg text-accent-cyan border-border !important;
-  @apply hover:bg-card-bg/80 !important;
+  @apply bg-card-bg text-main border-border !important;
+  @apply hover:bg-border !important;
 }
 
 /* Custom scrollbar */
@@ -62,13 +62,13 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-card-bg;
+  @apply bg-dark-bg;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-accent-cyan/50 rounded;
+  @apply bg-border rounded;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-accent-cyan/80;
+  @apply bg-accent-indigo;
 }

@@ -30,7 +30,7 @@ export default function AnalyticsDrawer({ children }: AnalyticsDrawerProps) {
     <>
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 px-6 py-3 bg-gradient-to-r from-[#0f172a] to-[#1e293b] border border-emerald-500/30 rounded-full hover:border-emerald-500/60 transition-all duration-300 flex items-center gap-2 group"
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 px-6 py-3 bg-card-bg border border-emerald-500/30 rounded-full hover:border-emerald-500/60 transition-all duration-300 flex items-center gap-2 group"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
@@ -50,9 +50,9 @@ export default function AnalyticsDrawer({ children }: AnalyticsDrawerProps) {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: '100%', opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="fixed bottom-0 left-0 right-0 z-30 max-h-[60vh] bg-gradient-to-t from-[#020617] via-[#07111f] to-[#0f172a] border-t border-emerald-500/20 backdrop-blur-lg rounded-t-2xl overflow-hidden"
+            className="fixed bottom-0 left-0 right-0 z-30 max-h-[60vh] bg-dark-bg border-t border-emerald-500/20 backdrop-blur-lg rounded-t-2xl overflow-hidden"
           >
-            <div className="flex gap-1 px-6 pt-6 pb-4 border-b border-emerald-500/10 bg-[#020617]/50">
+            <div className="flex gap-1 px-6 pt-6 pb-4 border-b border-emerald-500/10 bg-dark-bg/50">
               {tabs.map((tab) => (
                 <motion.button
                   key={tab.id}
@@ -80,7 +80,7 @@ export default function AnalyticsDrawer({ children }: AnalyticsDrawerProps) {
                   className="space-y-6"
                 >
                   {children ?? (
-                    <div className="p-4 bg-[#07111f] border border-emerald-500/20 rounded-lg text-sm text-gray-400">
+                    <div className="p-4 bg-card-bg border border-emerald-500/20 rounded-lg text-sm text-gray-400">
                       Dynamic analytics are loaded from the active dashboard data stream.
                     </div>
                   )}

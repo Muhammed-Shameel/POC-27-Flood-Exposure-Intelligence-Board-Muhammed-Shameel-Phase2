@@ -63,7 +63,7 @@ export default function RiskPredictionCard({
   const riskBadgeInfo = prediction?.risk_level ? getRiskBadgeInfo(prediction.risk_level) : null
 
   return (
-    <div className="glow-box p-6">
+    <div className="glow-box p-6 bg-card-bg">
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-accent-cyan mb-2">AI Risk Prediction</h3>
         <p className="text-sm text-gray-400">Machine Learning based flood risk assessment</p>

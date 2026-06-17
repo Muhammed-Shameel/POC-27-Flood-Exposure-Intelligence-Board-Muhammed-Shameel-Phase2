@@ -6,31 +6,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Intelligence terminal theme
-        'dark-bg': '#030712',
-        'card-bg': '#0B1117',
-        'border': '#1F2937',
-        'accent-cyan': '#38BDF8',
-        'accent-indigo': '#818CF8',
-        'accent-red': '#EF4444',
-        'accent-yellow': '#FBBF24',
+        // Refined monochrome dark theme
+        'dark-bg': '#0f1115',
+        'card-bg': '#1e222a',
+        'border': '#333944',
+        'main': '#f8fafc', // Renamed to 'main' so 'text-main' is generated
+        'accent-cyan': '#38bdf8',
+        'accent-indigo': '#64748b',
+        'accent-red': '#f87171',
+        'accent-yellow': '#fbbf24',
+        'accent-orange': '#fb923c',
+        'accent-green': '#4ade80',
       },
       fontFamily: {
         sans: ['var(--font-geist-sans)'],
         mono: ['var(--font-geist-mono)'],
-      },
-      boxShadow: {
-        'glow-cyan': '0 0 20px rgba(56, 189, 248, 0.3)',
-        'glow-indigo': '0 0 20px rgba(129, 140, 248, 0.3)',
-      },
-      animation: {
-        'pulse-cyan': 'pulse-cyan 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-      },
-      keyframes: {
-        'pulse-cyan': {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '.5' },
-        },
       },
     },
   },

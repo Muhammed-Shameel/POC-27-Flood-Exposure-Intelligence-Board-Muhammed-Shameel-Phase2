@@ -1,0 +1,42 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: flood-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/ml/models:/app/backend/ml/models
+      - ./backend/data:/app/backend/data
+      - ./backend/cache:/app/backend/cache
+    env_file:
+      - .env
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+    restart: unless-stopped
+    networks:
+      - flood-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: flood-frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      # This tells the Next.js server where to proxy /backend-api calls
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - flood-network
+
+networks:
+  flood-network:
+    driver: bridge

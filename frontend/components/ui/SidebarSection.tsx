@@ -30,7 +30,7 @@ export default function SidebarSection({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-lg border border-border/50 bg-gradient-to-b from-card-bg/80 to-transparent backdrop-blur-sm overflow-hidden"
+      className="rounded-lg border border-border/50 bg-card-bg bg-gradient-to-b from-card-bg/80 to-transparent backdrop-blur-sm overflow-hidden"
     >
       {/* Header */}
       <button

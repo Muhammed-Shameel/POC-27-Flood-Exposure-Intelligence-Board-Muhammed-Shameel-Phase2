@@ -114,6 +114,7 @@ export default function CommandCenter() {
   const [panelOpen,       setPanelOpen]       = useState(true)
   const [activeTab,       setActiveTab]       = useState<RightPanelTab>('ai')
   const [analyticsOpen,   setAnalyticsOpen]   = useState(false)
+  const [infoOpen,        setInfoOpen]        = useState(false)
   const [time,            setTime]            = useState<string>('')
   const [loading,         setLoading]         = useState(true)
   const [selectedCity,    setSelectedCity]    = useState<string>(ALL_CITIES)
@@ -312,7 +313,7 @@ export default function CommandCenter() {
 
   return (
     // Root: just a viewport anchor — no flex, no layout flow
-    <div className="fixed inset-0 bg-[#020617] text-white font-mono" style={{ isolation: 'isolate' }}>
+    <div className="fixed inset-0 bg-dark-bg text-main font-mono" style={{ isolation: 'isolate' }}>
 
       {/* ══════════════════════════════════════════════════════════════════════
           LAYER 0 — MAP BACKGROUND (permanent canvas, never moves)
@@ -386,6 +387,9 @@ export default function CommandCenter() {
           <span className="text-[9px] uppercase tracking-[0.08em] text-cyan-400/60 mt-0.5 font-semibold">
             Flood Intel Command
           </span>
+          <span className="text-[9px] uppercase tracking-[0.08em] text-blue-400/60 mt-0.5 font-semibold">
+            Inforcreon Internship
+          </span>
         </div>
 
         {/* KPI Row - Essential only */}
@@ -393,7 +397,6 @@ export default function CommandCenter() {
           <KPI label="Regions"   value={loading ? '--' : `${regionData.length}`}                   accent="cyan"    />
           <KPI label="Critical"  value={loading ? '--' : `${criticalCount}`}                       accent="red"     />
           <KPI label="Exposed Pop" value={loading ? '--' : formatDisplayNumber(exposedPopulation, 0)} accent="emerald" />
-          <KPI label="Selected"  value={selectedRegionLabel}                                       accent="violet"  />
         </div>
 
         <div className="h-9 w-px bg-white/10 shrink-0 mx-1" />
@@ -483,9 +486,31 @@ export default function CommandCenter() {
               OFFLINE_CACHE
             </div>
           )}
-          <div className="h-9 flex items-center gap-3 px-4 rounded-lg bg-[#06111d] border border-emerald-500/15">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
-            <span className="text-gray-400 text-[12px] font-bold tabular-nums tracking-widest">{time}</span>
+          <div className="relative flex items-center gap-3">
+            <div className="h-9 flex items-center gap-3 px-4 rounded-lg bg-[#06111d] border border-emerald-500/15">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
+              <span className="text-gray-400 text-[12px] font-bold tabular-nums tracking-widest">{time}</span>
+            </div>
+            <button
+              onClick={() => setInfoOpen(!infoOpen)}
+              className="h-9 w-9 flex items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20"
+            >
+              ⓘ
+            </button>
+            <AnimatePresence>
+              {infoOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}
+                  className="absolute top-full right-0 mt-2 w-48 rounded-xl border border-emerald-500/20 bg-[#06111d] p-4 text-white shadow-xl z-[900]"
+                >
+                  <h2 className="text-sm font-bold text-emerald-300 mb-2">About the Creator</h2>
+                  <div className="space-y-1 text-[11px]">
+                    <p><span className="text-gray-400">Name:</span> Muhammed Shameel</p>
+                    <p><span className="text-gray-400">Batch:</span> Batch 3</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </nav>
@@ -2186,12 +2211,12 @@ function downloadCsv(filename: string, csv: string) {
 
 function commandColors(accent: 'emerald' | 'cyan' | 'red' | 'blue' | 'violet' | 'amber') {
   const map = {
-    emerald: { text: 'text-emerald-300', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', dot: 'bg-emerald-400', hex: '#34d399' },
-    cyan:    { text: 'text-cyan-300',    bg: 'bg-cyan-500/10',    border: 'border-cyan-500/20',    dot: 'bg-cyan-400',    hex: '#22d3ee' },
-    red:     { text: 'text-red-300',     bg: 'bg-red-500/10',     border: 'border-red-500/20',     dot: 'bg-red-400',     hex: '#f87171' },
-    blue:    { text: 'text-blue-300',    bg: 'bg-blue-500/10',    border: 'border-blue-500/20',    dot: 'bg-blue-400',    hex: '#60a5fa' },
-    violet:  { text: 'text-violet-300',  bg: 'bg-violet-500/10',  border: 'border-violet-500/20',  dot: 'bg-violet-400',  hex: '#a78bfa' },
-    amber:   { text: 'text-amber-300',   bg: 'bg-amber-500/10',   border: 'border-amber-500/20',   dot: 'bg-amber-400',   hex: '#f59e0b' },
+    emerald: { text: 'text-emerald-300', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', dot: 'bg-emerald-400', hex: '#0d9488' },
+    cyan:    { text: 'text-cyan-300',    bg: 'bg-cyan-500/10',    border: 'border-cyan-500/20',    dot: 'bg-cyan-400',    hex: '#0891b2' },
+    red:     { text: 'text-red-300',     bg: 'bg-red-500/10',     border: 'border-red-500/20',     dot: 'bg-red-400',     hex: '#be123c' },
+    blue:    { text: 'text-blue-300',    bg: 'bg-blue-500/10',    border: 'border-blue-500/20',    dot: 'bg-blue-400',    hex: '#475569' },
+    violet:  { text: 'text-violet-300',  bg: 'bg-violet-500/10',  border: 'border-violet-500/20',  dot: 'bg-violet-400',  hex: '#7c3aed' },
+    amber:   { text: 'text-amber-300',   bg: 'bg-amber-500/10',   border: 'border-amber-500/20',   dot: 'bg-amber-400',   hex: '#b45309' },
   }
   return map[accent]
 }

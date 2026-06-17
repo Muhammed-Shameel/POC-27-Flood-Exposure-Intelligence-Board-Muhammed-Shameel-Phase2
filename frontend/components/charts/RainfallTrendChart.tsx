@@ -32,14 +32,15 @@ export default function RainfallTrendChart({
               <stop offset="95%" stopColor="#38BDF8" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1F2937" />
-          <XAxis dataKey="time" stroke="#6B7280" style={{ fontSize: '12px' }} />
-          <YAxis stroke="#6B7280" style={{ fontSize: '12px' }} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#333944" />
+          <XAxis dataKey="time" stroke="#f8fafc" style={{ fontSize: '12px' }} />
+          <YAxis stroke="#f8fafc" style={{ fontSize: '12px' }} />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0B1117',
-              border: '1px solid #38BDF8',
+              backgroundColor: '#0f1115',
+              border: '1px solid #333944',
               borderRadius: '8px',
+              color: '#f8fafc'
             }}
             formatter={(value) => [formatMetric(Number(value), ' mm'), 'Rainfall']}
             cursor={{ stroke: '#38BDF8', strokeWidth: 1 }}
