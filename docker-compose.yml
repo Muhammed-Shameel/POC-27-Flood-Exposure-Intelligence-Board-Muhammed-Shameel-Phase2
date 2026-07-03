@@ -30,7 +30,7 @@ services:
       - .env
     environment:
       # This tells the Next.js server where to proxy /backend-api calls
-      - NEXT_PUBLIC_API_URL=http://backend:8000
+      - NEXT_PUBLIC_API_URL= https://flood-exposure-intelligence-board.onrender.com
     depends_on:
       - backend
     restart: unless-stopped
