@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-06-15T16:02:21.874357",
+  "type": "current",
+  "data": {
+    "location": {
+      "lat": 29.7604,
+      "lon": -95.3698
+    },
+    "current": {
+      "time": "2026-06-15T16:00",
+      "interval": 900,
+      "temperature_2m": 28.9,
+      "relative_humidity_2m": 83,
+      "precipitation": 0.0,
+      "cloud_cover": 100,
+      "wind_speed_10m": 17.0
+    }
+  }
+}
