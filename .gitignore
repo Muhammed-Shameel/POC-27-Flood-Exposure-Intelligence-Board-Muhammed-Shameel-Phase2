@@ -29,7 +29,6 @@ backend/cache/*.json
 backend/cache/*.csv
 
 # ML Models & Artifacts  
-backend/ml/models/*.pkl
 backend/ml/datasets/*.csv
 backend/ml/notebooks/.ipynb_checkpoints/
 
